@@ -1,0 +1,217 @@
+#!/bin/bash
+##################################################################################
+##################################################################################
+###### PLEASE DO NOT COPY, MODIFY OR ALTER THIS SCRIPT                       #####
+###### This script is copyrighted Gescio Oteco Alpuro - WH6AV ©2016          #####
+###### Questions can be directed to my email address wh6av@allpuremedia.com  #####
+######                              v1.0                                     #####
+##################################################################################
+##################################################################################
+
+wd=$(pwd)
+uid=$(id -u)
+
+echo ""
+echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS SCRIPT"
+echo "This script is copyrighted Gescio Oteco Alpuro - WH6AV ©2016"
+echo "Questions can be directed to my email address wh6av@allpuremedia.com"
+echo ""
+
+[ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
+
+while true
+do
+	echo ""
+	echo ""
+	echo "It is recommended to run 'apt-get update' and 'apt-get upgrade' before proceeding."
+	echo ""
+	echo "If you have run apt-get updates and upgrade less than a week ago, respond with N to both"
+	echo ""
+read -p 'Proceed with apt-get update ?  Y or N  ' aptvar1
+	case $aptvar1 in
+	[yY]* ) echo ""
+		echo "Okay.  We will proceed to do apt-get update."
+		apt-get update
+		echo ""
+		echo "Alright, apt-get update completed."
+		echo ""
+		break;;
+	[nN]* ) echo ""
+		echo "Moving on to next step."
+		echo ""
+		break;;
+	
+	* )	echo "Please enter Y or N";;
+	esac
+done
+
+while true
+do
+	echo ""
+	echo ""
+read -p 'Proceed with apt-get upgrade ?  Y or N  ' aptvar2
+	case $aptvar2 in
+	[yY]* ) echo ""
+		echo "Okay.  We will proceed to do apt-get upgrade."
+		apt-get upgrade -y
+		echo ""
+		echo "Alright, apt-get upgrade completed."
+		echo ""
+		break;;
+	[nN]* ) echo ""
+		echo "Moving on to next step."
+		echo ""
+		break;;
+	
+	* )	echo "Please enter Y or N";;
+	esac
+done
+
+while true
+do
+	echo ""
+	echo ""
+	echo ""
+read -p 'Is this an initial install of MD380TOOLS? Y or N  ' installvar
+	case $installvar in
+	[yY]* ) echo ""
+		echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
+		echo ""
+		apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
+		pip install pyusb -U
+		break;;
+
+	[nN]* ) echo ""
+		echo ""
+		echo ""
+		echo "Okay.  Moving on to next step."
+		echo ""
+		echo ""
+		echo ""
+		break;;
+
+	* )	echo "Please enter Y or N";;
+	esac
+done
+	
+	
+
+if [ $wd="/home/mmdvm" ];
+	then
+	echo ""
+	echo ""
+	echo ""
+	echo "Curent work directory is $wd"
+	echo ""
+	echo ""
+	echo ""
+		if [[ -d "md380tools" ]]; then
+			echo ""
+			echo ""
+			echo ""
+			echo "md380tools exist"
+			echo ""
+			echo ""
+			echo ""
+		else
+		#	rm -rf md380tools
+			git clone https://github.com/travisgoodspeed/md380tools
+			cd md380tools
+			make clean
+			make all
+			cd db
+			make clean
+			make all
+		fi
+fi
+
+while true
+do
+read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
+	case $flashfwvar in
+	[yY]* ) echo ""
+		echo ""
+		echo "Please ensure USB cable is connected to your RPi and Radio"
+		echo ""
+		echo "Please turn radio on as you normally do."
+		echo "Please put your Radio in DFU-MODE"
+		echo "Hold PTT and button above at the same time and turn radio on."
+		echo "Waiting 20 seconds, after which flashing of your radio will start."
+		echo ""
+		read -p 'Are you in DFU mode?  Y or N  ' dfumodevar
+			case $dfumodevar in
+			[yY]* ) echo ""
+				echo "Proceeding to update radio firmware."
+				cd $wd/md380tools
+				make flash
+				break;;
+			[nN]* ) echo ""
+				echo ""
+				break;;
+			* ) esac
+			
+				
+		sleep 20
+		cd $wd/md380tools
+		echo $wd
+		make flash
+		break;;
+
+	[nN]* ) echo ""
+		echo ""
+		echo ""
+		echo "Okay"
+		echo ""
+		echo ""
+		echo ""
+		break;;
+
+	* )	echo "Please enter Y or N";;
+	esac
+done
+	
+while true
+do
+read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
+	case $flashdbvar in
+	[yY]* ) echo ""
+		echo ""
+		echo "Please ensure USB cable is connected to your RPi and Radio"
+		echo ""
+		echo "Please turn radio on as you normally do."
+		echo "Radio should not be in DFU-MODE!!!"
+		echo ""
+		echo "Waiting 20 seconds"
+		echo ""
+		sleep 20
+		cd $wd/md380tools/db
+		echo $wd
+		make clean
+		make all
+		cd $wd/md380tools
+		make flashdb
+		echo $wd
+		echo "Once radio is turned on, make sure USERSCSV is enabled."
+		echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
+		echo ""
+		echo ""
+		echo "Enjoy!"
+		echo "73 and Aloha!"
+		echo ""
+		echo "Gescio Alpuro - WH6AV"
+		
+		break;;
+	
+	[nN]* ) echo ""
+		echo ""
+		echo ""
+		echo "73 and Aloha!"
+		echo "Gescio Alpuro - WH6AV"
+		echo ""
+		echo ""
+		echo ""
+		exit;;
+	
+	* )	echo "Please enter Y or N";;
+	esac
+done	
