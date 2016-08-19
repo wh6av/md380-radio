@@ -4,9 +4,10 @@ Please do not alter, change or modify coding.
 
 All questions should be directed to me via wh6av@allpuremedia.com.
 
-To install program unto Raspberry Pi, please type the following command at the command line:
+To install program unto Raspberry Pi, login to your Raspberry Pi and type the following commands at the command line:
 
 wget http://wh6av.org/md380-update
+
 chmod +x md380-update
 
 To run program type the following at the command line:
