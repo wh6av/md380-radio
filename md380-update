@@ -1,217 +1,734 @@
 #!/bin/bash
+
+trap ctrl_c INT
+function ctrl_c() {
+        echo ""
+        echo "** Sorry CTRL-C not permitted.  Please exit with option 99."
+        echo ""
+}
+ 
 ##################################################################################
 ##################################################################################
-###### PLEASE DO NOT COPY, MODIFY OR ALTER THIS SCRIPT                       #####
-###### This script is copyrighted Gescio Oteco Alpuro - WH6AV ©2016          #####
-###### Questions can be directed to my email address wh6av@allpuremedia.com  #####
-######                              v1.0                                     #####
+###### PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM                      #####
+###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
+###### Questions, bugs or to request additional features can be directed     #####
+###### to my email address wh6av@allpuremedia.com                            #####
+######                              v5.1                                     #####
 ##################################################################################
 ##################################################################################
 
 wd=$(pwd)
 uid=$(id -u)
 
+dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
+
 echo ""
-echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS SCRIPT"
-echo "This script is copyrighted Gescio Oteco Alpuro - WH6AV ©2016"
-echo "Questions can be directed to my email address wh6av@allpuremedia.com"
-echo ""
+echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
+echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
+echo "Questions, bugs or to request additional features can be directed"
+echo "to my email address wh6av@allpuremedia.com"
+echo "                             v5.1"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
-while true
-do
+if [ "$dist" == "Ubuntu" ]; then
 	echo ""
+	echo "OK.  OS is UBUNTU."
 	echo ""
-	echo "It is recommended to run 'apt-get update' and 'apt-get upgrade' before proceeding."
+	sleep 5
+	make clean
+elif [ "$dist" == "Raspbian" ]; then
 	echo ""
-	echo "If you have run apt-get updates and upgrade less than a week ago, respond with N to both"
+	echo "OK.  OS is RASPBIAN."
 	echo ""
-read -p 'Proceed with apt-get update ?  Y or N  ' aptvar1
-	case $aptvar1 in
-	[yY]* ) echo ""
-		echo "Okay.  We will proceed to do apt-get update."
-		apt-get update
-		echo ""
-		echo "Alright, apt-get update completed."
-		echo ""
-		break;;
-	[nN]* ) echo ""
-		echo "Moving on to next step."
-		echo ""
-		break;;
-	
-	* )	echo "Please enter Y or N";;
-	esac
-done
+	sleep 5
+	make dist clean
+else
+	make clean
+fi	
+							
 
 while true
 do
-	echo ""
-	echo ""
-read -p 'Proceed with apt-get upgrade ?  Y or N  ' aptvar2
-	case $aptvar2 in
-	[yY]* ) echo ""
-		echo "Okay.  We will proceed to do apt-get upgrade."
-		apt-get upgrade -y
-		echo ""
-		echo "Alright, apt-get upgrade completed."
-		echo ""
-		break;;
-	[nN]* ) echo ""
-		echo "Moving on to next step."
-		echo ""
-		break;;
-	
-	* )	echo "Please enter Y or N";;
-	esac
-done
+clear
+echo ""
+echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
+echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
+echo "Questions, bugs or to request additional features can be directed"
+echo "to my email address wh6av@allpuremedia.com"
+echo "                             v5.1"
 
-while true
-do
-	echo ""
-	echo ""
-	echo ""
-read -p 'Is this an initial install of MD380TOOLS? Y or N  ' installvar
-	case $installvar in
-	[yY]* ) echo ""
-		echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
-		echo ""
-		apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
-		pip install pyusb -U
-		break;;
+echo ""
+echo "1)   Run APT-GET UPDATE"
+echo "2)   Run APT-GET UPGRADE"
+echo "3)   Install Prerequisite programs for MD380TOOLS"
+echo "4)   Install or update MD380TOOLS"
+echo "5)   Flash new hacked firmware for MD380 or MD390 radio"
+echo "6)   Flash DMR User Database to MD380 or MD390 radio"
+echo "7)   Make a backup of raw (headless) codeplug from MD380 or MD390 radio"
+echo "8)   Restore a backup of raw (headless) codeplug to MD380 or MD390 radio"
+echo "9)   Install MMDVMHost"
+echo "10)  Install service related programs for MMDVMHost"
+echo "     **********************************************************************"
+echo "          USE OPTION 6 ONLY IF MMDVMHOST IS IN THE FOLLOWING LOCATION:"      
+echo "                         /home/mmdvm/Downloads/MMDVMHost              "      
+echo "     **********************************************************************"
+echo "11)  Install MMDVMHost-Dashboard"
+echo "12)  Install BRANDMEISTER-Dashboard"
+echo "13)  Change root password"
+echo "14)  REBOOT RASPBERRY PI"
+echo "15)  SHUTDOWN RASPBERRY PI"
+echo ""
+echo "99)  EXIT PROGRAM"
+echo ""
 
-	[nN]* ) echo ""
-		echo ""
-		echo ""
-		echo "Okay.  Moving on to next step."
-		echo ""
-		echo ""
-		echo ""
-		break;;
+echo -n "Please enter your choice.  " 
+read choice
+echo
 
-	* )	echo "Please enter Y or N";;
-	esac
-done
-	
-	
+case $choice in
+	1) 
+	echo ""
 
-if [ $wd="/home/mmdvm" ];
-	then
-	echo ""
-	echo ""
-	echo ""
-	echo "Curent work directory is $wd"
-	echo ""
-	echo ""
-	echo ""
-		if [[ -d "md380tools" ]]; then
+		while true
+		do
 			echo ""
 			echo ""
+			echo "It is recommended to run 'apt-get update' and 'apt-get upgrade' before proceeding."
 			echo ""
-			echo "md380tools exist"
+			echo "If you have run apt-get updates and upgrade less than a week ago, respond with N to both"
 			echo ""
-			echo ""
-			echo ""
-		else
-		#	rm -rf md380tools
-			git clone https://github.com/travisgoodspeed/md380tools
-			cd md380tools
-			make clean
-			make all
-			cd db
-			make clean
-			make all
-		fi
-fi
-
-while true
-do
-read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
-	case $flashfwvar in
-	[yY]* ) echo ""
-		echo ""
-		echo "Please ensure USB cable is connected to your RPi and Radio"
-		echo ""
-		echo "Please turn radio on as you normally do."
-		echo "Please put your Radio in DFU-MODE"
-		echo "Hold PTT and button above at the same time and turn radio on."
-		echo "Waiting 20 seconds, after which flashing of your radio will start."
-		echo ""
-		read -p 'Are you in DFU mode?  Y or N  ' dfumodevar
-			case $dfumodevar in
+		read -p 'Proceed with apt-get update ?  Y or N  ' aptvar1
+			case $aptvar1 in
 			[yY]* ) echo ""
-				echo "Proceeding to update radio firmware."
-				cd $wd/md380tools
-				make flash
-				break;;
-			[nN]* ) echo ""
+				echo "Okay.  We will proceed to do apt-get update."
+				apt-get update
+				echo ""
+				echo "Alright, apt-get update completed."
 				echo ""
 				break;;
-			* ) esac
+			[nN]* ) echo ""
+				echo "Moving on to next step."
+				echo ""
+				break;;
 			
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+
+	;;
+	2)
+	echo ""
+
+		while true
+		do
+			echo ""
+			echo ""
+		read -p 'Proceed with apt-get upgrade ?  Y or N  ' aptvar2
+			case $aptvar2 in
+			[yY]* ) echo ""
+				echo "Okay.  We will proceed to do apt-get upgrade."
+				apt-get upgrade -y
+				echo ""
+				echo "Alright, apt-get upgrade completed."
+				echo ""
+				break;;
+			[nN]* ) echo ""
+				echo "Moving on to next step."
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+
+	;;
+	3) 	
+	echo ""
+
+		while true
+		do
+			echo ""
+			echo ""
+			echo ""
+		read -p 'Is this an initial install of MD380TOOLS? Y or N  ' installvar
+			case $installvar in
+			[yY]* ) echo ""
+				echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
+				echo ""
+				apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
+				apt-get install screen -y
+				apt-get install git -y
+				apt-get install python-pip -y
+				pip install pyusb -U
+				git clone https://github.com/walac/pyusb
+				cd pyusb
+				python setup.py install
+	
+				break;;
+
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "Okay.  Moving on to next step."
+				echo ""
+				echo ""
+				echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	
+	;;
+	4) 
+	echo ""
+			echo ""
+
+		if [ $wd="/home/mmdvm" ];
+			then
+			echo ""
+			echo ""
+			echo ""
+			echo "Curent work directory is $wd"
+			echo ""
+			echo ""
+			echo ""
+				if [[ -d "md380tools" ]]; then
+					echo ""
+					echo ""
+					echo "md380tools exist"
+					echo ""
+					echo ""
+						while true
+						do
+						read -p 'Would you like to update md380tools?  Y or N  ' updatemd380toolsvar
+						case $updatemd380toolsvar in
+							[yY]* ) echo ""
+								echo "Okay.  We will proceed to update MD380TOOLS."
+								echo ""
+								cd md380tools
+								git pull
+									if [ "$dist" == "Ubuntu" ]; then
+										echo ""
+										echo "OK.  Building for Ubuntu."
+										echo ""
+										sleep 5
+										make clean
+										make all
+									elif [ "$dist" == "Raspbian" ]; then
+										echo ""
+										echo "OK.  Building for Raspbian."
+										echo ""
+										sleep 5
+										make dist clean
+										make all
+									else
+										make clean
+										make all
+									fi	
+								sleep 5	
+								echo ""
+								echo "Okay MD380TOOLS has been updated."
+								echo ""
+								break;;
+							[nN]* ) echo ""
+								break;;
+							* ) 	echo "Please enter Y or N.";;
+							esac
+						done
+
+						
+						
+							
+				else
+				#	rm -rf md380tools
+					git clone https://github.com/travisgoodspeed/md380tools
+					cd md380tools
+						if [ "$dist" == "Ubuntu" ]; then
+							echo ""
+							echo "OK.  Building for Ubuntu."
+							echo ""
+							sleep 5
+							make clean
+						elif [ "$dist" == "Raspbian" ]; then
+							echo ""
+							echo "OK.  Building for Raspbian."
+							echo ""
+							sleep 5
+							make dist clean
+						else
+							make clean
+						fi	
+							
+					make all
+					sleep 5
+					cd db
+					make clean
+					make all
+					sleep 5
+				fi
+		elif [ $wd="/home/pi" ];
+			then
+			echo ""
+			echo ""
+			echo ""
+			echo "Curent work directory is $wd"
+			echo ""
+			echo ""
+			echo ""
+			sleep 5
+				if [[ -d "md380tools" ]]; then
+					echo ""
+					echo ""
+					echo "md380tools exist"
+					echo ""
+					echo ""
+						while true
+						do
+						read -p 'Would you like to update md380tools?  Y or N  ' updatemd380toolsvar
+						case $updatemd380toolsvar in
+							[yY]* ) echo ""
+								echo "Okay.  We will proceed to update MD380TOOLS."
+								echo ""
+								cd md380tools
+								git pull
+									if [ "$dist" == "Ubuntu" ]; then
+										echo ""
+										echo "OK.  Building for Ubuntu."
+										echo ""
+										sleep 5
+										make clean
+										make all
+									elif [ "$dist" == "Raspbian" ]; then
+										echo ""
+										echo "OK.  Building for Raspbian."
+										echo ""
+										sleep 5
+										make dist clean
+										make all
+									else
+										make clean
+										make all
+									fi	
+								sleep 5	
+								echo ""
+								echo "Okay MD380TOOLS has been updated."
+								echo ""
+								break;;
+							[nN]* ) echo ""
+								break;;
+							* ) 	echo "Please enter Y or N.";;
+							esac
+						done
+
+						
+						
+							
+				else
+				#	rm -rf md380tools
+					git clone https://github.com/travisgoodspeed/md380tools
+					cd md380tools
+						if [ "$dist" == "Ubuntu" ]; then
+							echo ""
+							echo "OK.  Building for Ubuntu."
+							echo ""
+							sleep 5
+							make clean
+						elif [ "$dist" == "Raspbian" ]; then
+							echo ""
+							echo "OK.  Building for Raspbian."
+							echo ""
+							sleep 5
+							make dist clean
+						else
+							make clean
+						fi	
+							
+					make all
+					sleep 5
+				fi
+
+		fi
+
+	;;
+	5) 
+	echo ""
+
+		while true
+		do
+		read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
+			case $flashfwvar in
+			[yY]* ) echo ""
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Please turn radio off."
+				echo "Put your Radio in DFU-MODE"
+				echo "Hold PTT and button above at the same time and turn radio on."
+				echo "Waiting 20 seconds, after which flashing of your radio will start."
+				echo ""
+
+					while true
+					do
+					read -p 'Are you in DFU mode?  Y or N  ' dfumodevar
+						case $dfumodevar in
+						[yY]* ) echo ""
+							echo "Proceeding to update radio firmware."
+							cd $wd/md380tools
+							make flash
+							sleep 10
+							break;;
+						[nN]* ) echo ""
+							echo ""
+							break;;
+						* ) 
+					esac
+					done
 				
-		sleep 20
-		cd $wd/md380tools
-		echo $wd
-		make flash
-		break;;
+				break;;
 
-	[nN]* ) echo ""
-		echo ""
-		echo ""
-		echo "Okay"
-		echo ""
-		echo ""
-		echo ""
-		break;;
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "Okay"
+				echo ""
+				echo ""
+				echo ""
+				break;;
 
-	* )	echo "Please enter Y or N";;
-	esac
-done
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	6) 
+	echo ""
 	
-while true
-do
-read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
-	case $flashdbvar in
-	[yY]* ) echo ""
-		echo ""
-		echo "Please ensure USB cable is connected to your RPi and Radio"
-		echo ""
-		echo "Please turn radio on as you normally do."
-		echo "Radio should not be in DFU-MODE!!!"
-		echo ""
-		echo "Waiting 20 seconds"
-		echo ""
-		sleep 20
-		cd $wd/md380tools/db
-		echo $wd
-		make clean
-		make all
-		cd $wd/md380tools
-		make flashdb
-		echo $wd
-		echo "Once radio is turned on, make sure USERSCSV is enabled."
-		echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
-		echo ""
-		echo ""
-		echo "Enjoy!"
-		echo "73 and Aloha!"
-		echo ""
-		echo "Gescio Alpuro - WH6AV"
+		while true
+		do
+		read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
+			case $flashdbvar in
+			[yY]* ) echo ""
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Please turn radio on as you normally do."
+				echo "Radio should not be in DFU-MODE!!!"
+				echo ""
+				echo "Waiting 20 seconds"
+				echo ""
+				sleep 20
+				cd $wd/md380tools/db
+				echo $wd
+				make clean
+				make all
+				cd $wd/md380tools
+				make flashdb
+				echo $wd
+				echo "Once radio is turned on, make sure USERSCSV is enabled."
+				echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
+				echo ""
+				echo ""
+				echo "Enjoy!"
+				echo "73 and Aloha!"
+				echo ""
+				echo "Gescio Alpuro - WH6AV"
 		
-		break;;
+				break;;
 	
-	[nN]* ) echo ""
-		echo ""
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "73 and Aloha!"
+				echo "Gescio Alpuro - WH6AV"
+				echo ""
+				echo ""
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done	
+	;;
+	7) 
+	echo ""
+	
+		while true
+		do
+		read -p 'Would you like to create a raw backup codeplug for your MD380 or MD390? Y or N  ' rawbackupvar
+			case $rawbackupvar in
+			[yY]* ) echo ""
+				echo "Please turn radio off."
+				echo "Put your Radio in DFU-MODE"
+				echo "Hold PTT and button above it at the same time and turn radio on."
+				echo "LED on radio should be flashing red and green."
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Radio should be in DFU-MODE!"
+				echo ""
+				echo "Waiting 20 seconds"
+				echo ""
+				sleep 20
+				cd $wd/md380tools/
+				./md380-dfu read radio-codeplug.img
+				echo ""
+				echo "Raw (headless) codeplug backup has been made and saved!"
+		
+				break;;
+	
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo ""
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done	
+	;;
+	8) 
+	echo ""
+	
+		while true
+		do
+		read -p 'Would you like to restore a raw backup codeplug to your MD380 or MD390? Y or N  ' rawrestorevar
+			echo ""
+			echo "YOU MUST CREATE A BACKUP OF YOUR RADIO FIRST TO USE THIS RESTORE!!!"
+			echo ""
+			case $rawrestorevar in
+			[yY]* ) echo ""
+				echo "Please turn radio off."
+				echo "Put your Radio in DFU-MODE"
+				echo "Hold PTT and button above it at the same time and turn radio on."
+				echo "LED on radio should be flashing red and green."
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Radio should be in DFU-MODE!"
+				echo ""
+				echo "Waiting 20 seconds"
+				echo ""
+				sleep 20
+				cd $wd/md380tools/
+				./md380-dfu write radio-codeplug.img
+				echo ""
+				echo "Raw (headless) codeplug restore has been made!"
+				echo ""
+				sleep 5
+				break;;
+	
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo ""
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done	
+	;;
+	9) 
+	echo ""
+		while true
+		do
+			echo ""
+		read -p 'Would you like to install MMDVMHost?  Y or N  ' mmdvmhostvar
+			case $mmdvmhostvar in
+			[yY]* ) echo ""
+				echo "Okay.  We will proceed to install MMDVMHost."
+				echo ""
+				if [[ -d "Downloads" ]]; then
+					cd Downloads
+				else
+					mkdir Downloads
+				fi
+				cd Downloads
+				git clone https://github.com/g4klx/MMDVMHost
+				cd MMDVMHost
+				make
+				break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+			esac
+		done
+
+	;;
+	10)
+	echo ""
+		while true
+		do
+		read -p 'Are you sure you want to add MMDVMHost service and timer related files and enable them?  Y or N  '  srvtimevar
+		case $srvtimevar in
+			[yY]* ) echo ""
+
+				cd /lib/systemd/system/
+				wget http://66.75.80.170/mmdvmhost.service
+				wget http://66.75.80.170/mmdvmhost.timer
+				ln -s /lib/systemd/system/mmdvmhost.service /etc/systemd/system/mmdvmhost.service
+				ln -s /lib/systemd/system/mmdvmhost.timer /etc/systemd/system/mmdvmhost.timer
+				systemctl daemon-reload
+				systemctl enable mmdvmhost.service
+				systemctl enable mmdvmhost.timer
+				echo ""
+				echo "Files mmdvmhost.service and mmdvmhost.timer has been added and enabled."
+				echo ""
+				break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+			esac
+		done
+
+	;;
+	11) echo ""
+		while true
+		do
+		read -p 'Are you sure you want to install MMDVMHost-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
+		case $mmdvmhostdbvar in
+			[yY]* ) echo ""
+				echo "OK.  Installing MMDVMHost-Dashboard now."
+				echo ""
+					if [[ -d /var/www/html ]]; then
+						cd /var/www/html
+						git clone https://github.com/dg9vh/MMDVMHost-Dashboard
+						echo ""
+						echo "MMDVMHost-Dashboard has been installed"
+						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
+						echo ""
+						sleep 5
+					elif [[ -d /srv/http ]]; then
+						cd /srv/http
+						git clone https://github.com/dg9vh/MMDVMHost-Dashboard
+						echo ""
+						echo "MMDVMHost-Dashboard has been installed"
+						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
+						echo ""
+						sleep 5
+					else echo ""
+						echo "Sorry.  Webserver directory not found."
+						echo ""
+						sleep 5
+						
+					fi
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	12) echo ""
+		while true
+		do
+		read -p 'Are you sure you want to install BrandMeister-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
+		case $mmdvmhostdbvar in
+			[yY]* ) echo ""
+				echo "OK.  Installing BrandMeister-Dashboard now."
+				echo ""
+					if [[ -d /var/www/html ]]; then
+						cd /var/www/html
+						git clone https://github.com/zarya/BrandMeister-Dashboard
+						echo ""
+						echo "BrandMeister-Dashboard has been installed"
+						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
+						echo ""
+						sleep 5
+					elif [[ -d /srv/http ]]; then
+						cd /srv/http
+						git clone https://github.com/zarya/BrandMeister-Dashboard
+						echo ""
+						echo "BrandMeister-Dashboard has been installed"
+						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
+						echo ""
+						sleep 5
+					else echo ""
+						echo "Sorry.  Webserver directory not found."
+						echo ""
+						sleep 5
+					fi
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	13) echo ""
+		while true
+		do
+		read -p 'Would you like to change the password for root?  Y or N  ' rpwvar
+		case $rpwvar in
+			[yY]* ) echo ""
+				echo "OK.  Changing password for root."
+				echo ""
+				sudo passwd root
+				echo ""
+				echo "Password for root has been changed."
+				echo ""
+				sleep 5
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	14) echo ""
+		while true
+		do
+		read -p 'ARE YOU SURE YOU WANT TO RESTART YOUR RASPBERRY PI?  Y or N  ' restartvar
+		case $restartvar in
+			[yY]* ) echo ""
+				echo "OK.  Restarting Raspberry Pi now."
+				echo ""
+				sudo reboot
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	15) echo ""
+		while true
+		do
+		read -p 'ARE YOU SURE YOU WANT TO POWER OFF YOUR RASPBERRY PI?  Y or N  ' poweroffvar
+		case $poweroffvar in
+			[yY]* ) echo ""
+				echo "OK.  POWERING OFF Raspberry PI NOW."
+				echo ""
+				echo "GOODBYE!!!"
+				sleep 5
+				sudo poweroff
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	99) echo ""
 		echo ""
 		echo "73 and Aloha!"
 		echo "Gescio Alpuro - WH6AV"
-		echo ""
 		echo ""
 		echo ""
 		exit;;
-	
-	* )	echo "Please enter Y or N";;
+
+	* )	echo "Please enter letter of coice";;
 	esac
-done	
+done
