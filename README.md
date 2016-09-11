@@ -18,7 +18,7 @@ Github way, please follow as instructed:
 
 Login vi SSH and run following command:
 
-apt-get install screen -y
+apt-get install git -y
 
 Wait for installation of GIT to complete.  You will be back at CLI, command line interface prompt.  Type the following:
 
@@ -37,6 +37,10 @@ Instructions to flash firmware to your radio as follows:
 3 - Run option 6 to install and/or update DMR ID database to your radio.
 
 That's it to flashing firmware and installing and/or updating DMR ID database.
+
+To update md380tools just run option 4. 
+
+To update DMR ID Database once a week, run option 6.  You may update as often as you want.  I update every 3 or 4 days.
 
 73 and Aloha!
 
