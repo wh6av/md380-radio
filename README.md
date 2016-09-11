@@ -18,7 +18,7 @@ Github way, please follow as instructed:
 
 Login vi SSH and run following command:
 
-apt-get install screen -y
+apt-get install git -y
 
 Wait for installation of GIT to complete.  You will be back at CLI, command line interface prompt.  Type the following:
 
