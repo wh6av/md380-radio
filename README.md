@@ -23,7 +23,7 @@ SETUP PROCEDURE 2
 
 GITHUB way, please follow as instructed to install program:
 
-Login vi SSH and run following command:
+Login via SSH and run following command:
 
 apt-get install git -y
 
