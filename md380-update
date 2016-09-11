@@ -1,6 +1,7 @@
 #!/bin/bash
-
+clear
 trap ctrl_c INT
+
 function ctrl_c() {
         echo ""
         echo "** Sorry CTRL-C not permitted.  Please exit with option 99."
@@ -13,12 +14,16 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v5.2                                     #####
+######                              v5.3                                     #####
 ##################################################################################
 ##################################################################################
 
 wd=$(pwd)
 uid=$(id -u)
+fullname="/root/.fullname"
+callsign="/root/.callsign"
+timestamp1=`date --rfc-3339=seconds`
+LOGFILE="/root/.md380.log"
 
 dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
@@ -27,7 +32,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v5.2"
+echo "                             v5.3"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -42,11 +47,28 @@ elif [ "$dist" == "Raspbian" ]; then
 	echo "OK.  OS is RASPBIAN."
 	echo ""
 	sleep 5
-	make dist clean
 else
-	make clean
+	echo ""
 fi	
 							
+if [ -f $fullname ]; then
+	echo "Welcome "
+	echo $(cat /root/.fullname) $(cat /root/.callsign)
+	echo "$(cat /root/.fullname) $(cat /root/.callsign) logged in at $timestamp1" >> $LOGFILE
+	sleep 5
+	clear
+else
+	echo ""
+	echo ""	
+	echo -n "Please enter your FULL NAME and press [ENTER]: "
+	read name; echo $name > $fullname
+	echo ""	
+	echo -n "Please enter your CALLSIGN and press [ENTER]: "
+	read callsign1; echo $callsign1 > $callsign
+	echo ""
+	clear
+	echo "$(cat /root/.fullname) $(cat /root/.callsign) logged in at $timestamp1" >> $LOGFILE
+fi
 
 while true
 do
@@ -56,7 +78,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v5.2"
+echo "                             v5.3"
 
 echo ""
 echo "1)   Run APT-GET UPDATE"
@@ -92,6 +114,8 @@ case $choice in
 
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 			echo ""
 			echo ""
 			echo "It is recommended to run 'apt-get update' and 'apt-get upgrade' before proceeding."
@@ -106,6 +130,7 @@ case $choice in
 				echo ""
 				echo "Alright, apt-get update completed."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) APT-GET UPDATE executed at $timestamp1 " >> $LOGFILE
 				break;;
 			[nN]* ) echo ""
 				echo "Moving on to next step."
@@ -122,6 +147,8 @@ case $choice in
 
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 			echo ""
 			echo ""
 		read -p 'Proceed with apt-get upgrade ?  Y or N  ' aptvar2
@@ -132,6 +159,7 @@ case $choice in
 				echo ""
 				echo "Alright, apt-get upgrade completed."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) APT-GET UPGRADE executed at $timestamp1 " >> $LOGFILE
 				break;;
 			[nN]* ) echo ""
 				echo "Moving on to next step."
@@ -148,6 +176,8 @@ case $choice in
 
 		while true
 		do
+timestamp1=`date --rfc-3339=seconds`
+		clear
 			echo ""
 			echo ""
 			echo ""
@@ -156,6 +186,7 @@ case $choice in
 			[yY]* ) echo ""
 				echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION executed at $timestamp1 " >> $LOGFILE
 				apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
 				apt-get install screen -y
 				apt-get install git -y
@@ -183,6 +214,8 @@ case $choice in
 	;;
 	4) 
 	echo ""
+	clear
+timestamp1=`date --rfc-3339=seconds`
 			echo ""
 
 		if [ $wd="/home/mmdvm" ];
@@ -216,6 +249,7 @@ case $choice in
 										sleep 5
 										make clean
 										make all
+										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 									elif [ "$dist" == "Raspbian" ]; then
 										echo ""
 										echo "OK.  Building for Raspbian."
@@ -223,6 +257,7 @@ case $choice in
 										sleep 5
 										make dist clean
 										make all
+										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 									else
 										make clean
 										make all
@@ -251,17 +286,17 @@ case $choice in
 							echo ""
 							sleep 5
 							make clean
-							make all
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						elif [ "$dist" == "Raspbian" ]; then
 							echo ""
 							echo "OK.  Building for Raspbian."
 							echo ""
 							sleep 5
 							make dist clean
-							make all
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						else
 							make clean
-							make all
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						fi	
 							
 					make all
@@ -269,6 +304,7 @@ case $choice in
 					cd db
 					make clean
 					make all
+					echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID DATABASE UPDATE executed at $timestamp1 " >> $LOGFILE
 					sleep 5
 				fi
 		elif [ $wd="/home/pi" ];
@@ -303,6 +339,7 @@ case $choice in
 										sleep 5
 										make clean
 										make all
+										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 									elif [ "$dist" == "Raspbian" ]; then
 										echo ""
 										echo "OK.  Building for Raspbian."
@@ -310,9 +347,11 @@ case $choice in
 										sleep 5
 										make dist clean
 										make all
+										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 									else
 										make clean
 										make all
+										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 									fi	
 								sleep 5	
 								echo ""
@@ -338,14 +377,17 @@ case $choice in
 							echo ""
 							sleep 5
 							make clean
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						elif [ "$dist" == "Raspbian" ]; then
 							echo ""
 							echo "OK.  Building for Raspbian."
 							echo ""
 							sleep 5
 							make dist clean
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						else
 							make clean
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						fi	
 							
 					make all
@@ -360,6 +402,8 @@ case $choice in
 
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
 			case $flashfwvar in
 			[yY]* ) echo ""
@@ -380,6 +424,7 @@ case $choice in
 							echo "Proceeding to update radio firmware."
 							cd $wd/md380tools
 							make flash
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
 							break;;
 						[nN]* ) echo ""
@@ -409,6 +454,8 @@ case $choice in
 	
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
 			case $flashdbvar in
 			[yY]* ) echo ""
@@ -428,6 +475,7 @@ case $choice in
 				cd $wd/md380tools
 				make flashdb
 				echo $wd
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
 				echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
 				echo ""
@@ -458,6 +506,8 @@ case $choice in
 	
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to create a raw backup codeplug for your MD380 or MD390? Y or N  ' rawbackupvar
 			case $rawbackupvar in
 			[yY]* ) echo ""
@@ -477,6 +527,7 @@ case $choice in
 				./md380-dfu read radio-codeplug.img
 				echo ""
 				echo "Raw (headless) codeplug backup has been made and saved!"
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) RAW BACKUP executed at $timestamp1 " >> $LOGFILE
 		
 				break;;
 	
@@ -496,6 +547,8 @@ case $choice in
 	
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to restore a raw backup codeplug to your MD380 or MD390? Y or N  ' rawrestorevar
 			echo ""
 			echo "YOU MUST CREATE A BACKUP OF YOUR RADIO FIRST TO USE THIS RESTORE!!!"
@@ -518,6 +571,7 @@ case $choice in
 				./md380-dfu write radio-codeplug.img
 				echo ""
 				echo "Raw (headless) codeplug restore has been made!"
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) RAW RESTORE executed at $timestamp1 " >> $LOGFILE
 				echo ""
 				sleep 5
 				break;;
@@ -537,6 +591,8 @@ case $choice in
 	echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 			echo ""
 		read -p 'Would you like to install MMDVMHost?  Y or N  ' mmdvmhostvar
 			case $mmdvmhostvar in
@@ -552,6 +608,7 @@ case $choice in
 				git clone https://github.com/g4klx/MMDVMHost
 				cd MMDVMHost
 				make
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST INSTALL executed at $timestamp1 " >> $LOGFILE
 				break;;
 			[nN]* ) echo ""
 				break;;
@@ -564,6 +621,8 @@ case $choice in
 	echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to add MMDVMHost service and timer related files and enable them?  Y or N  '  srvtimevar
 		case $srvtimevar in
 			[yY]* ) echo ""
@@ -579,6 +638,7 @@ case $choice in
 				echo ""
 				echo "Files mmdvmhost.service and mmdvmhost.timer has been added and enabled."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST SERVICE INSTALL executed at $timestamp1 " >> $LOGFILE
 				break;;
 			[nN]* ) echo ""
 				break;;
@@ -590,6 +650,8 @@ case $choice in
 	11) echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to install MMDVMHost-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
 		case $mmdvmhostdbvar in
 			[yY]* ) echo ""
@@ -602,6 +664,7 @@ case $choice in
 						echo "MMDVMHost-Dashboard has been installed"
 						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
 						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST DASHBOARD INSTALL executed at $timestamp1 " >> $LOGFILE
 						sleep 5
 					elif [[ -d /srv/http ]]; then
 						cd /srv/http
@@ -610,6 +673,7 @@ case $choice in
 						echo "MMDVMHost-Dashboard has been installed"
 						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
 						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST DASHBOARD INSTALL executed at $timestamp1 " >> $LOGFILE
 						sleep 5
 					else echo ""
 						echo "Sorry.  Webserver directory not found."
@@ -629,6 +693,8 @@ case $choice in
 	12) echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to install BrandMeister-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
 		case $mmdvmhostdbvar in
 			[yY]* ) echo ""
@@ -641,6 +707,7 @@ case $choice in
 						echo "BrandMeister-Dashboard has been installed"
 						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
 						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) BRANDMEISTER DASHBOARD INSTALL executed at $timestamp1 " >> $LOGFILE
 						sleep 5
 					elif [[ -d /srv/http ]]; then
 						cd /srv/http
@@ -649,6 +716,7 @@ case $choice in
 						echo "BrandMeister-Dashboard has been installed"
 						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
 						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) BRANDMEISTER DASHBOARD INSTALL executed at $timestamp1 " >> $LOGFILE
 						sleep 5
 					else echo ""
 						echo "Sorry.  Webserver directory not found."
@@ -667,6 +735,8 @@ case $choice in
 	13) echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to change the password for root?  Y or N  ' rpwvar
 		case $rpwvar in
 			[yY]* ) echo ""
@@ -676,6 +746,7 @@ case $choice in
 				echo ""
 				echo "Password for root has been changed."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) ROOT PASSWORD CHANGE executed at $timestamp1 " >> $LOGFILE
 				sleep 5
 				break;;
 		
@@ -689,11 +760,14 @@ case $choice in
 	14) echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'ARE YOU SURE YOU WANT TO RESTART YOUR RASPBERRY PI?  Y or N  ' restartvar
 		case $restartvar in
 			[yY]* ) echo ""
 				echo "OK.  Restarting Raspberry Pi now."
 				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) REBOOT executed at $timestamp1 " >> $LOGFILE
 				sudo reboot
 				break;;
 		
@@ -707,12 +781,15 @@ case $choice in
 	15) echo ""
 		while true
 		do
+		clear
+timestamp1=`date --rfc-3339=seconds`
 		read -p 'ARE YOU SURE YOU WANT TO POWER OFF YOUR RASPBERRY PI?  Y or N  ' poweroffvar
 		case $poweroffvar in
 			[yY]* ) echo ""
 				echo "OK.  POWERING OFF Raspberry PI NOW."
 				echo ""
 				echo "GOODBYE!!!"
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) POWEROFF executed at $timestamp1 " >> $LOGFILE
 				sleep 5
 				sudo poweroff
 				break;;
@@ -730,6 +807,9 @@ case $choice in
 		echo "Gescio Alpuro - WH6AV"
 		echo ""
 		echo ""
+		clear
+timestamp1=`date --rfc-3339=seconds`
+		echo "$(cat /root/.fullname) $(cat /root/.callsign) logged out at $timestamp1 " >> $LOGFILE
 		exit;;
 
 	* )	echo "Please enter letter of coice";;
