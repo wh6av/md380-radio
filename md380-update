@@ -201,7 +201,7 @@ timestamp1=`date --rfc-3339=seconds`
 			[nN]* ) echo ""
 				echo ""
 				echo ""
-				echo "Okay.  Moving on to next step."
+				echo "Okay.  Back to Main Menu."
 				echo ""
 				echo ""
 				echo ""
@@ -300,10 +300,6 @@ timestamp1=`date --rfc-3339=seconds`
 						fi	
 							
 					make all
-					sleep 5
-					cd db
-					make clean
-					make all
 					echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID DATABASE UPDATE executed at $timestamp1 " >> $LOGFILE
 					sleep 5
 				fi
@@ -363,10 +359,6 @@ timestamp1=`date --rfc-3339=seconds`
 							* ) 	echo "Please enter Y or N.";;
 							esac
 						done
-
-						
-						
-							
 				else
 				#	rm -rf md380tools
 					git clone https://github.com/travisgoodspeed/md380tools
@@ -377,6 +369,7 @@ timestamp1=`date --rfc-3339=seconds`
 							echo ""
 							sleep 5
 							make clean
+							make all
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						elif [ "$dist" == "Raspbian" ]; then
 							echo ""
@@ -384,9 +377,11 @@ timestamp1=`date --rfc-3339=seconds`
 							echo ""
 							sleep 5
 							make dist clean
+							make all
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						else
 							make clean
+							make all
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 						fi	
 							
