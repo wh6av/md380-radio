@@ -2,7 +2,7 @@ Please do not alter, change or modify coding.
 
 All questions should be directed to me via wh6av@allpuremedia.com.
 
-This program was created for all users of the MD-380 and MD-390 radios.  Please note that this is intended to be run from a Raspberry Pi machine.  Itcan also bu used on a Debian or Raspbian installation also.
+This program was created for all users of the MD-380 and MD-390 radios.  Please note that this is intended to be run from a Raspberry Pi machine.  It can also be used on a Debian or Raspbian installation also.
 
 To install program unto Raspberry Pi, Debian or Raspbian, login via SSH and type the following commands at the command line:
 
