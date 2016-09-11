@@ -251,14 +251,17 @@ case $choice in
 							echo ""
 							sleep 5
 							make clean
+							make all
 						elif [ "$dist" == "Raspbian" ]; then
 							echo ""
 							echo "OK.  Building for Raspbian."
 							echo ""
 							sleep 5
 							make dist clean
+							make all
 						else
 							make clean
+							make all
 						fi	
 							
 					make all
