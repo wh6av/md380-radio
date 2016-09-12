@@ -1,7 +1,39 @@
 #!/bin/bash
-clear
-trap ctrl_c INT
 
+		timestamp1=`date --rfc-3339=seconds`
+		timestamp2=`date --rfc-3339=seconds`
+
+while true
+do
+read -d . VERSION < /etc/debian_version
+		if [ "$VERSION" == "7" ]; then
+		fullname="/root/.fullname"
+		callsign="/root/.callsign"
+		LOGFILE="/root/.md380.log"
+			echo ""
+			echo "OK.  OS is DEBIAN WHEEZY."
+			echo ""
+			echo "DEBIAN JESSIE IS REQUIRED TO RUN THIS PROGRAM.  PLEASE UPGRADE YOUR OS BEFORE USING THIS PROGRAM."
+			echo ""
+			echo "PROGRAM WILL NOW EXIT!"
+			echo ""
+			now=$(date "+%Y-%d-%m %H:%M:%S")
+			echo "$(cat /root/.fullname) $(cat /root/.callsign) ***  ERROR *** DEBIAN WHEEZY DETECTED at $now " >> $LOGFILE
+			sleep 2
+			now1=$(date "+%Y-%d-%m %H:%M:%S")
+			echo "$(cat /root/.fullname) $(cat /root/.callsign) logged out at $now1 " >> $LOGFILE
+			sleep 20
+			exit
+		elif [ "$VERSION" == "8" ]; then
+			echo ""
+			echo "OK.  OS is DEBIAN JESSIE."
+			echo ""
+			sleep 5
+		fi
+done
+
+trap ctrl_c INT
+clear
 function ctrl_c() {
         echo ""
         echo "** Sorry CTRL-C not permitted.  Please exit with option 99."
@@ -27,6 +59,25 @@ LOGFILE="/root/.md380.log"
 
 dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
+if [ "$dist" == "Ubuntu" ]; then
+	echo ""
+	echo "OK.  OS is UBUNTU."
+	echo ""
+	sleep 5
+elif [ "$dist" == "Debian" ]; then
+	echo ""
+	echo ""
+	echo "OK.  OS is DEBIAN JESSIE."
+	echo ""
+	sleep 5
+elif [ "$dist" == "Raspbian" ]; then
+	echo ""
+	echo "OK.  OS is RASPBIAN."
+	echo ""
+	sleep 5
+else
+	echo ""
+fi	
 echo ""
 echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
@@ -36,20 +87,6 @@ echo "                             v5.3"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
-if [ "$dist" == "Ubuntu" ]; then
-	echo ""
-	echo "OK.  OS is UBUNTU."
-	echo ""
-	sleep 5
-	make clean
-elif [ "$dist" == "Raspbian" ]; then
-	echo ""
-	echo "OK.  OS is RASPBIAN."
-	echo ""
-	sleep 5
-else
-	echo ""
-fi	
 							
 if [ -f $fullname ]; then
 	echo "Welcome "
@@ -115,7 +152,7 @@ case $choice in
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 			echo ""
 			echo ""
 			echo "It is recommended to run 'apt-get update' and 'apt-get upgrade' before proceeding."
@@ -148,7 +185,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 			echo ""
 			echo ""
 		read -p 'Proceed with apt-get upgrade ?  Y or N  ' aptvar2
@@ -176,7 +213,7 @@ timestamp1=`date --rfc-3339=seconds`
 
 		while true
 		do
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		clear
 			echo ""
 			echo ""
@@ -215,7 +252,7 @@ timestamp1=`date --rfc-3339=seconds`
 	4) 
 	echo ""
 	clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 			echo ""
 
 		if [ $wd="/home/mmdvm" ];
@@ -398,7 +435,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
 			case $flashfwvar in
 			[yY]* ) echo ""
@@ -450,7 +487,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
 			case $flashdbvar in
 			[yY]* ) echo ""
@@ -502,7 +539,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to create a raw backup codeplug for your MD380 or MD390? Y or N  ' rawbackupvar
 			case $rawbackupvar in
 			[yY]* ) echo ""
@@ -543,7 +580,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to restore a raw backup codeplug to your MD380 or MD390? Y or N  ' rawrestorevar
 			echo ""
 			echo "YOU MUST CREATE A BACKUP OF YOUR RADIO FIRST TO USE THIS RESTORE!!!"
@@ -587,7 +624,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 			echo ""
 		read -p 'Would you like to install MMDVMHost?  Y or N  ' mmdvmhostvar
 			case $mmdvmhostvar in
@@ -617,7 +654,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to add MMDVMHost service and timer related files and enable them?  Y or N  '  srvtimevar
 		case $srvtimevar in
 			[yY]* ) echo ""
@@ -646,7 +683,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to install MMDVMHost-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
 		case $mmdvmhostdbvar in
 			[yY]* ) echo ""
@@ -689,7 +726,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Are you sure you want to install BrandMeister-Dashboard to your Raspberry Pi?  Y or N  ' mmdvmhostdbvar
 		case $mmdvmhostdbvar in
 			[yY]* ) echo ""
@@ -731,7 +768,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to change the password for root?  Y or N  ' rpwvar
 		case $rpwvar in
 			[yY]* ) echo ""
@@ -756,7 +793,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'ARE YOU SURE YOU WANT TO RESTART YOUR RASPBERRY PI?  Y or N  ' restartvar
 		case $restartvar in
 			[yY]* ) echo ""
@@ -777,7 +814,7 @@ timestamp1=`date --rfc-3339=seconds`
 		while true
 		do
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		read -p 'ARE YOU SURE YOU WANT TO POWER OFF YOUR RASPBERRY PI?  Y or N  ' poweroffvar
 		case $poweroffvar in
 			[yY]* ) echo ""
@@ -803,7 +840,7 @@ timestamp1=`date --rfc-3339=seconds`
 		echo ""
 		echo ""
 		clear
-timestamp1=`date --rfc-3339=seconds`
+		timestamp1=`date --rfc-3339=seconds`
 		echo "$(cat /root/.fullname) $(cat /root/.callsign) logged out at $timestamp1 " >> $LOGFILE
 		exit;;
 
