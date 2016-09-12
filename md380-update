@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v5.3                                     #####
+######                              v6.0                                     #####
 ##################################################################################
 ##################################################################################
 
@@ -77,7 +77,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v5.3"
+echo "                             v6.0"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -109,7 +109,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v5.3"
+echo "                             v6.0"
 
 echo ""
 echo "1)   Run APT-GET UPDATE"
@@ -126,11 +126,14 @@ echo "     *********************************************************************
 echo "          USE OPTION 10 ONLY IF MMDVMHOST IS IN THE FOLLOWING LOCATION:"      
 echo "                         /home/mmdvm/Downloads/MMDVMHost              "      
 echo "     **********************************************************************"
-echo "11)  Install MMDVMHost-Dashboard"
-echo "12)  Install BRANDMEISTER-Dashboard"
-echo "13)  Change root password"
-echo "14)  REBOOT RASPBERRY PI"
-echo "15)  SHUTDOWN RASPBERRY PI"
+echo "11)  RESTART MMDVMHost"
+echo "12)  STOP MMDVMHost"
+echo "13)  START MMDVMHost"
+echo "14)  Install MMDVMHost-Dashboard"
+echo "15)  Install BRANDMEISTER-Dashboard"
+echo "16)  Change root password"
+echo "17)  REBOOT RASPBERRY PI"
+echo "18)  SHUTDOWN RASPBERRY PI"
 echo ""
 echo "99)  EXIT PROGRAM"
 echo ""
@@ -140,8 +143,7 @@ read choice
 echo
 
 case $choice in
-	1) 
-	echo ""
+	1) echo ""
 
 		while true
 		do
@@ -173,8 +175,7 @@ case $choice in
 		done
 
 	;;
-	2)
-	echo ""
+	2) echo ""
 
 		while true
 		do
@@ -202,8 +203,7 @@ case $choice in
 		done
 
 	;;
-	3) 	
-	echo ""
+	3) 	echo ""
 
 		while true
 		do
@@ -243,8 +243,7 @@ case $choice in
 		done
 	
 	;;
-	4) 
-	echo ""
+	4) echo ""
 	clear
 		timestamp1=`date --rfc-3339=seconds`
 			echo ""
@@ -423,8 +422,7 @@ case $choice in
 		fi
 
 	;;
-	5) 
-	echo ""
+	5) echo ""
 
 		while true
 		do
@@ -475,8 +473,7 @@ case $choice in
 			esac
 		done
 	;;
-	6) 
-	echo ""
+	6) echo ""
 	
 		while true
 		do
@@ -527,8 +524,7 @@ case $choice in
 			esac
 		done	
 	;;
-	7) 
-	echo ""
+	7) echo ""
 	
 		while true
 		do
@@ -568,8 +564,7 @@ case $choice in
 			esac
 		done	
 	;;
-	8) 
-	echo ""
+	8) echo ""
 	
 		while true
 		do
@@ -613,8 +608,7 @@ case $choice in
 			esac
 		done	
 	;;
-	9) 
-	echo ""
+	9) echo ""
 		while true
 		do
 		clear
@@ -643,8 +637,7 @@ case $choice in
 		done
 
 	;;
-	10)
-	echo ""
+	10) echo ""
 		while true
 		do
 		clear
@@ -674,6 +667,72 @@ case $choice in
 
 	;;
 	11) echo ""
+		while true
+		do
+		clear
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Are you sure you want to restart MMDVMHost service?  Y or N  '  restartmmdvmvar
+		case $restartmmdvmvar in
+			[yY]* ) echo ""
+
+				systemctl restart mmdvmhost.service
+				echo ""
+				echo "MMDVMHOST has been restarted."
+				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST RESTART executed at $timestamp1 " >> $LOGFILE
+				break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+			esac
+		done
+
+	;;
+	12) echo ""
+		while true
+		do
+		clear
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Are you sure you want to STOP MMDVMHost?  Y or N  '  stopmmdvmvar
+		case $stopmmdvmvar in
+			[yY]* ) echo ""
+				systemctl stop mmdvmhost.service
+				echo ""
+				echo "STOPPPING MMDVMHOST....."
+				sleep 5
+				echo "MMDVMHOST has stopped."
+				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST STOP executed at $timestamp1 " >> $LOGFILE
+				break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+			esac
+		done
+	;;
+	13) echo ""
+		while true
+		do
+		clear
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Are you sure you want to START MMDVMHost?  Y or N  '  stopmmdvmvar
+		case $stopmmdvmvar in
+			[yY]* ) echo ""
+				systemctl start mmdvmhost.service
+				echo ""
+				echo "STARTING MMDVMHOST....."
+				sleep 5
+				echo "MMDVMHOST has started."
+				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST START executed at $timestamp1 " >> $LOGFILE
+				break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+			esac
+		done
+	;;
+	14) echo ""
 		while true
 		do
 		clear
@@ -716,7 +775,7 @@ case $choice in
 			esac
 		done
 	;;
-	12) echo ""
+	15) echo ""
 		while true
 		do
 		clear
@@ -758,7 +817,7 @@ case $choice in
 			esac
 		done
 	;;
-	13) echo ""
+	16) echo ""
 		while true
 		do
 		clear
@@ -783,7 +842,7 @@ case $choice in
 			esac
 		done
 	;;
-	14) echo ""
+	17) echo ""
 		while true
 		do
 		clear
@@ -804,7 +863,7 @@ case $choice in
 			esac
 		done
 	;;
-	15) echo ""
+	18) echo ""
 		while true
 		do
 		clear
