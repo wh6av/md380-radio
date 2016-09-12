@@ -3,8 +3,6 @@
 		timestamp1=`date --rfc-3339=seconds`
 		timestamp2=`date --rfc-3339=seconds`
 
-while true
-do
 read -d . VERSION < /etc/debian_version
 		if [ "$VERSION" == "7" ]; then
 		fullname="/root/.fullname"
@@ -30,7 +28,6 @@ read -d . VERSION < /etc/debian_version
 			echo ""
 			sleep 5
 		fi
-done
 
 trap ctrl_c INT
 clear
