@@ -141,6 +141,7 @@ echo "17)  Change root password"
 echo "18)  REBOOT RASPBERRY PI"
 echo "19)  SHUTDOWN RASPBERRY PI"
 echo "20)  Enable md380-update autostart on login"
+echo "21)  Install DV4MF2 Control Panel for DV4MINI"
 echo ""
 echo "99)  EXIT PROGRAM"
 echo ""
@@ -984,6 +985,40 @@ case $choice in
 				echo "NEXT LOGIN WILL TAKE YOU STRAIGHT TO MD380-UPDATE MENU."
 				echo ""
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380-UPDATE AUTOSTART executed at $timestamp1 " >> $LOGFILE
+				sleep 5
+				break;;
+		
+			[nN]* ) echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;
+	21) echo ""
+		while true
+		do
+		clear
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'ARE YOU SURE YOU WANT TO INSTALL DV4MF2 CONTROL PANEL FOR DV4MINI?  Y or N  ' dv4mf2var
+		case $dv4mf2var in
+			[yY]* ) echo ""
+				echo "OK.  DV4MF2 CONTROL PANEL will be installed for DV4MINI."
+				echo ""
+				cd ~Downloads
+				wget http://66.75.80.170/DV4MF2.tgz
+				tar zxvf DV4MF2.tgz
+					file1="/usr/bin/mono"
+					if [ -f $file1 ]; then
+						echo "Your operating system meets the requirement to run DV4MF2 control panel."
+						sleep 5 
+					else 
+						echo "Your operating system REQUIRES MONO to run DV4MF2 control panel."
+						sleep 10
+					fi
+				
+				echo ""
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) DV4MF2 INSTALLATION executed at $timestamp1 " >> $LOGFILE
 				sleep 5
 				break;;
 		
