@@ -264,17 +264,11 @@ case $choice in
 		if [ $wd="/home/mmdvm" ];
 			then
 			echo ""
-			echo ""
-			echo ""
 			echo "Curent work directory is $wd"
 			echo ""
-			echo ""
-			echo ""
-				if [[ -d "$wd/md380tools" ]]; then
-					echo ""
+				if [[ -d "/home/mmdvm/md380tools" ]]; then
 					echo ""
 					echo "md380tools exist"
-					echo ""
 					echo ""
 						while true
 						do
@@ -283,7 +277,7 @@ case $choice in
 							[yY]* ) echo ""
 								echo "Okay.  We will proceed to update MD380TOOLS."
 								echo ""
-								cd $wd/md380tools
+								cd /home/mmdvm/md380tools
 								git pull
 									if [ "$dist" == "Ubuntu" ]; then
 										echo ""
@@ -320,9 +314,9 @@ case $choice in
 						
 							
 				else
-				#	rm -rf md380tools
+					cd /home/mmdvm
 					git clone https://github.com/travisgoodspeed/md380tools
-					cd $wd/md380tools
+					cd /home/mmdvm/md380tools
 						if [ "$dist" == "Ubuntu" ]; then
 							echo ""
 							echo "OK.  Building for Ubuntu."
@@ -349,18 +343,12 @@ case $choice in
 		elif [ $wd="/home/pi" ];
 			then
 			echo ""
-			echo ""
-			echo ""
 			echo "Curent work directory is $wd"
 			echo ""
-			echo ""
-			echo ""
 			sleep 5
-				if [[ -d "$wd/md380tools" ]]; then
-					echo ""
+				if [[ -d "/home/pi/md380tools" ]]; then
 					echo ""
 					echo "md380tools exist"
-					echo ""
 					echo ""
 						while true
 						do
@@ -369,7 +357,7 @@ case $choice in
 							[yY]* ) echo ""
 								echo "Okay.  We will proceed to update MD380TOOLS."
 								echo ""
-								cd $wd/md380tools
+								cd /home/pi/md380tools
 								git pull
 									if [ "$dist" == "Ubuntu" ]; then
 										echo ""
@@ -403,9 +391,9 @@ case $choice in
 							esac
 						done
 				else
-				#	rm -rf md380tools
+					cd /home/pi
 					git clone https://github.com/travisgoodspeed/md380tools
-					cd md380tools
+					cd /home/pi/md380tools
 						if [ "$dist" == "Ubuntu" ]; then
 							echo ""
 							echo "OK.  Building for Ubuntu."
