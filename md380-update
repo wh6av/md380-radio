@@ -169,7 +169,7 @@ case $choice in
 					if [ -f $file1 ]; then
 						apt-get upgrade -y
 					elif [ -f $file2 ]; then
-						pacman -Su
+						pacman -Sy
 					fi
 				echo ""
 				echo "Alright, operating source files update completed."
