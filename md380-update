@@ -167,7 +167,7 @@ case $choice in
 					file1="/usr/bin/apt-get"
 					file2="/usr/bin/pacman"
 					if [ -f $file1 ]; then
-						apt-get upgrade -y
+						apt-get update -y
 					elif [ -f $file2 ]; then
 						pacman -Sy
 					fi
