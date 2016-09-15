@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v7.6                                     #####
+######                              v8.0                                     #####
 ##################################################################################
 ##################################################################################
 
@@ -89,7 +89,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v7.6"
+echo "                             v8.0"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -121,7 +121,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v7.6"
+echo "                             v8.0"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -265,172 +265,82 @@ case $choice in
 	;;
 	4) echo ""
 	clear
-		timestamp1=`date --rfc-3339=seconds`
-			echo ""
-
-		if [ $wd="/home/mmdvm" ];
-			then
-			echo ""
-			echo "Curent work directory is $wd"
-			echo ""
-				if [[ -d "/home/mmdvm/md380tools" ]]; then
-					echo ""
-					echo "md380tools exist"
-					echo ""
-						while true
-						do
-						read -p 'Would you like to update md380tools?  Y or N  ' updatemd380toolsvar
-						case $updatemd380toolsvar in
-							[yY]* ) echo ""
-								echo "Okay.  We will proceed to update MD380TOOLS."
-								echo ""
-								cd /home/mmdvm/md380tools
-								git pull
-									if [ "$dist" == "Ubuntu" ]; then
-										echo ""
-										echo "OK.  Building for Ubuntu."
-										echo ""
-										sleep 5
-										make clean
-										make all
-										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
-									elif [ "$dist" == "Raspbian" ]; then
-										echo ""
-										echo "OK.  Building for Raspbian."
-										echo ""
-										sleep 5
-										make dist clean
-										make all
-										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
-									else
-										make clean
-										make all
-									fi	
-								sleep 5	
-								echo ""
-								echo "Okay MD380TOOLS has been updated."
-								echo ""
-								break;;
-							[nN]* ) echo ""
-								break;;
-							* ) 	echo "Please enter Y or N.";;
-							esac
-						done
-
-						
-						
+	wd=$(pwd)
+	timestamp1=`date --rfc-3339=seconds`
+	echo ""
+	echo ""
+	echo "Curent work directory is $wd"
+	echo ""
+	if [[ -d "$wd/../md380tools" ]]; then
+		echo ""
+		echo "md380tools exist"
+		echo ""
+		while true
+		do
+		read -p 'Would you like to update md380tools?  Y or N  ' updatemd380toolsvar
+		case $updatemd380toolsvar in
+			[yY]* ) echo ""
+				echo "Okay.  We will proceed to update MD380TOOLS."
+				echo ""
+				cd $wd/../md380tools
+				git pull
+					if [ "$dist" == "Ubuntu" ]; then
+						echo ""
+						echo "OK.  Building for Ubuntu."
+						echo ""
+						sleep 5
+						make clean
+						make all
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
+					elif [ "$dist" == "Raspbian" ]; then
+						echo ""
+						echo "OK.  Building for Raspbian."
+						echo ""
+						sleep 5
+						make dist clean
+						make all
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
+					else
+						make clean
+						make all
+					fi	
+						sleep 5	
+						echo ""
+						echo "Okay MD380TOOLS has been updated."
+						echo ""
+						break;;
+			[nN]* ) echo ""
+				break;;
+			* ) 	echo "Please enter Y or N.";;
+		esac
+		done
+			else
+				cd $wd/..
+				git clone https://github.com/travisgoodspeed/md380tools
+				cd md380tools
+					if [ "$dist" == "Ubuntu" ]; then
+						echo ""
+						echo "OK.  Building for Ubuntu."
+						echo ""
+						sleep 5
+						make clean
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+					elif [ "$dist" == "Raspbian" ]; then
+						echo ""
+						echo "OK.  Building for Raspbian."
+						echo ""
+						sleep 5
+						make dist clean
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+					else
+						make clean
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+					fi	
 							
-				else
-					cd /home/mmdvm
-					git clone https://github.com/travisgoodspeed/md380tools
-					cd /home/mmdvm/md380tools
-						if [ "$dist" == "Ubuntu" ]; then
-							echo ""
-							echo "OK.  Building for Ubuntu."
-							echo ""
-							sleep 5
-							make clean
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						elif [ "$dist" == "Raspbian" ]; then
-							echo ""
-							echo "OK.  Building for Raspbian."
-							echo ""
-							sleep 5
-							make dist clean
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						else
-							make clean
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						fi	
-							
-					make all
-					echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
-					sleep 5
-				fi
-		elif [ $wd="/home/pi" ];
-			then
-			echo ""
-			echo "Curent work directory is $wd"
-			echo ""
-			sleep 5
-				if [[ -d "/home/pi/md380tools" ]]; then
-					echo ""
-					echo "md380tools exist"
-					echo ""
-						while true
-						do
-						read -p 'Would you like to update md380tools?  Y or N  ' updatemd380toolsvar
-						case $updatemd380toolsvar in
-							[yY]* ) echo ""
-								echo "Okay.  We will proceed to update MD380TOOLS."
-								echo ""
-								cd /home/pi/md380tools
-								git pull
-									if [ "$dist" == "Ubuntu" ]; then
-										echo ""
-										echo "OK.  Building for Ubuntu."
-										echo ""
-										sleep 5
-										make clean
-										make all
-										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-									elif [ "$dist" == "Raspbian" ]; then
-										echo ""
-										echo "OK.  Building for Raspbian."
-										echo ""
-										sleep 5
-										make dist clean
-										make all
-										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-									else
-										make clean
-										make all
-										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-									fi	
-								sleep 5	
-								echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
-								echo ""
-								echo "Okay MD380TOOLS has been updated."
-								echo ""
-								break;;
-							[nN]* ) echo ""
-								break;;
-							* ) 	echo "Please enter Y or N.";;
-							esac
-						done
-				else
-					cd /home/pi
-					git clone https://github.com/travisgoodspeed/md380tools
-					cd /home/pi/md380tools
-						if [ "$dist" == "Ubuntu" ]; then
-							echo ""
-							echo "OK.  Building for Ubuntu."
-							echo ""
-							sleep 5
-							make clean
-							make all
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						elif [ "$dist" == "Raspbian" ]; then
-							echo ""
-							echo "OK.  Building for Raspbian."
-							echo ""
-							sleep 5
-							make dist clean
-							make all
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						else
-							make clean
-							make all
-							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-						fi	
-							
-					make all
-					echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
-					sleep 5
-				fi
-
-		fi
-
+				make all
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
+				sleep 5
+			fi
 	;;
 	5) echo ""
 
