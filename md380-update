@@ -347,6 +347,7 @@ case $choice in
 		while true
 		do
 		clear
+		wd=$(pwd)
 		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the firmware for your MD380 or MD390? Y or N  ' flashfwvar
 			case $flashfwvar in
@@ -366,7 +367,7 @@ case $choice in
 						case $dfumodevar in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
-							cd ../md380tools
+							cd $wd/../md380tools
 							make flash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
@@ -398,6 +399,7 @@ case $choice in
 		while true
 		do
 		clear
+		wd=$(pwd)
 		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to flash the DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
 			case $flashdbvar in
@@ -411,11 +413,11 @@ case $choice in
 				echo "Waiting 20 seconds"
 				echo ""
 				sleep 20
-				cd ../md380tools/db
+				cd $wd/../md380tools/db
 				echo $wd
 				make clean
 				make all
-				cd ../md380tools
+				cd $wd/../md380tools
 				make flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
@@ -449,6 +451,7 @@ case $choice in
 		while true
 		do
 		clear
+		wd=$(pwd)
 		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to create a raw backup codeplug for your MD380 or MD390? Y or N  ' rawbackupvar
 			case $rawbackupvar in
@@ -465,7 +468,7 @@ case $choice in
 				echo "Waiting 20 seconds"
 				echo ""
 				sleep 20
-				cd $wd/md380tools/
+				cd $wd/../md380tools/
 				./md380-dfu read radio-codeplug.img
 				echo ""
 				echo "Raw (headless) codeplug backup has been made and saved!"
@@ -489,6 +492,7 @@ case $choice in
 		while true
 		do
 		clear
+		wd=$(pwd)
 		timestamp1=`date --rfc-3339=seconds`
 		read -p 'Would you like to restore a raw backup codeplug to your MD380 or MD390? Y or N  ' rawrestorevar
 			echo ""
@@ -508,7 +512,7 @@ case $choice in
 				echo "Waiting 20 seconds"
 				echo ""
 				sleep 20
-				cd $wd/md380tools/
+				cd $wd/../md380tools/
 				./md380-dfu write radio-codeplug.img
 				echo ""
 				echo "Raw (headless) codeplug restore has been made!"
