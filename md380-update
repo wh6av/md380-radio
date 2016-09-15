@@ -626,16 +626,29 @@ case $choice in
 				sleep 5
 				if [ "$wd" == "/home/mmdvm/md380-radio" ]; then
 					cd ../Downloads
-					git clone https://github.com/g4klx/MMDVMHost
-					cd MMDVMHost
-					make
+						if [ -d "MMDVMHost" ]; then
+							echo "MMDVMHost is already installed"
+							sleep 5
+						else
+							git clone https://github.com/g4klx/MMDVMHost
+							cd MMDVMHost
+							make
+							echo "MMDVMHost Installation completed"
+							sleep 5
+						fi
 				elif [ "$wd" == "/home/pi/md380-radio" ]; then
-					mkdir ../Downloads
 					cd ../Downloads
-					git clone https://github.com/g4klx/MMDVMHost
-					cd MMDVMHost
+						if [ -d "MMDVMHost" ]; then
+							echo "MMDVMHost is already installed"
+							sleep 5
+						else
+							git clone https://github.com/g4klx/MMDVMHost
+							cd MMDVMHost
+							make
+							echo "MMDVMHost Installation completed"
+							sleep 5
+						fi
 				fi
-				echo "MMDVMHost Installation completed"
 				sleep 5
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST INSTALL executed at $timestamp1 " >> $LOGFILE
 				break;;
