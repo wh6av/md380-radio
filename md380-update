@@ -51,6 +51,13 @@ callsign="/root/.callsign"
 timestamp1=`date --rfc-3339=seconds`
 LOGFILE="/root/.md380.log"
 
+if [ -d "/home/mmdvm" ]; then
+	echo ""
+else
+	useradd mmdvm
+	chown -R mmdvm:mmdvm /home/mmdvmm
+fi
+
 dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
 if [ "$dist" == "Ubuntu" ]; then
