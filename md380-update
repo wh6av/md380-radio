@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v7.5                                     #####
+######                              v7.6                                     #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v7.5"
+echo "                             v7.6"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v7.5"
+echo "                             v7.6"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -840,32 +840,74 @@ case $choice in
 					echo ""
 					echo "OK.  OS is UBUNTU."
 					echo ""
+					echo "Proceeding to install APACHE2 WEB SERVER."
 					sudo apt-get install apache2 -y
-					sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql -y
-					sudo mysql_install_db
-					sudo /usr/bin/mysql_secure_installation
-					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl enable apache2
+					sudo systemctl start apache2
+					echo "APACHE2 WEB SERVER installed."
+					sleep 5
+					echo "Proceeding to install mysql-server and mysql-client."
+					echo "During installation, you will be asked to setup the MySQL root user password. Enter the password and press ENTER key."
+					echo "Re-enter the password and press ENTER key."
+					sleep 10
+					sudo apt-get install mysql-server mysql-client -y
+					echo "MYSQL-SERVER and MYSQL-CLIENT installed."
+					sleep 5
+					echo "Proceeding to install PHP."
+					sudo apt-get update 
+					sudo apt-get install php7.0-mysql php7.0-curl php7.0-json php7.0-cgi php7.0 libapache2-mod-php7.0 -y
+#					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl restart apache2
+					echo "PHP installed."
 					sleep 5
 				elif [ "$dist" == "Debian" ]; then
 					echo ""
-					echo ""
 					echo "OK.  OS is DEBIAN JESSIE."
 					echo ""
+					echo "Proceeding to install APACHE2 WEB SERVER."
 					sudo apt-get install apache2 -y
-					sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql -y
-					sudo mysql_install_db
-					sudo /usr/bin/mysql_secure_installation
-					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl enable apache2
+					sudo systemctl start apache2
+					echo "APACHE2 WEB SERVER installed."
+					sleep 5
+					echo "Proceeding to install mysql-server and mysql-client."
+					echo "During installation, you will be asked to setup the MySQL root user password. Enter the password and press ENTER key."
+					echo "Re-enter the password and press ENTER key."
+					sleep 10
+					sudo apt-get install mysql-server mysql-client -y
+					sleep 5
+					echo "MYSQL-SERVER and MYSQL-CLIENT installed."
+					sleep 5
+					echo "Proceeding to install PHP."
+					sudo apt-get update 
+					sudo apt-get install php7.0-mysql php7.0-curl php7.0-json php7.0-cgi php7.0 libapache2-mod-php7.0 -y
+#					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl restart apache2
+					echo "PHP installed."
 					sleep 5
 				elif [ "$dist" == "Raspbian" ]; then
 					echo ""
 					echo "OK.  OS is RASPBIAN."
 					echo ""
+					echo "Proceeding to install APACHE2 WEB SERVER."
 					sudo apt-get install apache2 -y
-					sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql -y
-					sudo mysql_install_db
-					sudo /usr/bin/mysql_secure_installation
-					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl enable apache2
+					sudo systemctl start apache2
+					echo "APACHE2 WEB SERVER installed."
+					sleep 5
+					echo "Proceeding to install mysql-server and mysql-client."
+					echo "During installation, you will be asked to setup the MySQL root user password. Enter the password and press ENTER key."
+					echo "Re-enter the password and press ENTER key."
+					sleep 10
+					sudo apt-get install mysql-server mysql-client -y
+					echo "MYSQL-SERVER and MYSQL-CLIENT installed."
+					sleep 5
+					echo "Proceeding to install PHP."
+					sudo apt-get update 
+					sudo apt-get install php7.0-mysql php7.0-curl php7.0-json php7.0-cgi php7.0 libapache2-mod-php7.0 -y
+#					sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+					sudo systemctl restart apache2
+					echo "PHP installed."
 					sleep 5
 				elif [ "$dist" == "Arch" ]; then
 					echo ""
