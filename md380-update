@@ -613,6 +613,7 @@ case $choice in
 		while true
 		do
 		clear
+		wd=$(pwd)
 		timestamp1=`date --rfc-3339=seconds`
 			echo ""
 		read -p 'Would you like to install MMDVMHost?  Y or N  ' mmdvmhostvar
@@ -620,15 +621,22 @@ case $choice in
 			[yY]* ) echo ""
 				echo "Okay.  We will proceed to install MMDVMHost."
 				echo ""
-				if [[ -d "Downloads" ]]; then
-					cd Downloads
-				else
-					mkdir Downloads
+				echo "Your current directory is $wd."
+				echo ""
+				sleep 5
+				if [ "$wd" == "/home/mmdvm/md380-radio" ]; then
+					cd ../Downloads
+					git clone https://github.com/g4klx/MMDVMHost
+					cd MMDVMHost
+					make
+				elif [ "$wd" == "/home/pi/md380-radio" ]; then
+					mkdir ../Downloads
+					cd ../Downloads
+					git clone https://github.com/g4klx/MMDVMHost
+					cd MMDVMHost
 				fi
-				cd Downloads
-				git clone https://github.com/g4klx/MMDVMHost
-				cd MMDVMHost
-				make
+				echo "MMDVMHost Installation completed"
+				sleep 5
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST INSTALL executed at $timestamp1 " >> $LOGFILE
 				break;;
 			[nN]* ) echo ""
