@@ -337,7 +337,7 @@ case $choice in
 						fi	
 							
 					make all
-					echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID DATABASE UPDATE executed at $timestamp1 " >> $LOGFILE
+					echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
 					sleep 5
 				fi
 		elif [ $wd="/home/pi" ];
@@ -381,6 +381,7 @@ case $choice in
 										echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 									fi	
 								sleep 5	
+								echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
 								echo ""
 								echo "Okay MD380TOOLS has been updated."
 								echo ""
@@ -417,6 +418,7 @@ case $choice in
 						fi	
 							
 					make all
+					echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
 					sleep 5
 				fi
 
@@ -447,7 +449,7 @@ case $choice in
 						case $dfumodevar in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
-							cd $wd/md380tools
+							cd ../md380tools
 							make flash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
@@ -492,11 +494,11 @@ case $choice in
 				echo "Waiting 20 seconds"
 				echo ""
 				sleep 20
-				cd $wd/md380tools/db
+				cd ../md380tools/db
 				echo $wd
 				make clean
 				make all
-				cd $wd/md380tools
+				cd ../md380tools
 				make flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
