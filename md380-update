@@ -913,6 +913,7 @@ case $choice in
 					echo ""
 					echo "OK.  OS is ARCH LINUX."
 					echo ""
+					sudo pacman -Syu
 					sudo pacman -S apache
 					systemctl enable httpd
 					systemctl restart httpd
