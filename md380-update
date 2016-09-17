@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v8.0                                     #####
+######                              v8.5                                     #####
 ##################################################################################
 ##################################################################################
 
@@ -50,13 +50,6 @@ fullname="/root/.fullname"
 callsign="/root/.callsign"
 timestamp1=`date --rfc-3339=seconds`
 LOGFILE="/root/.md380.log"
-
-if [ -d "/home/mmdvm" ]; then
-	echo ""
-else
-	useradd mmdvm
-	chown -R mmdvm:mmdvm /home/mmdvmm
-fi
 
 dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
@@ -89,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v8.0"
+echo "                             v8.5"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -121,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v8.0"
+echo "                             v8.5"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -149,6 +142,7 @@ echo "18)  REBOOT RASPBERRY PI"
 echo "19)  SHUTDOWN RASPBERRY PI"
 echo "20)  Enable md380-update autostart on login"
 echo "21)  Install DV4MF2 Control Panel for DV4MINI"
+echo "     *******  DV4MINI INCLUDED  ******"
 echo ""
 echo "99)  EXIT PROGRAM"
 echo ""
@@ -989,6 +983,25 @@ case $choice in
 						sleep 5 
 					else 
 						echo "Your operating system REQUIRES MONO to run DV4MF2 control panel."
+							while true
+							do
+							timestamp3=`date --rfc-3339=seconds`
+							read -p 'Would you like to install MONO?  Y or N  ' monovar
+							case $monovar in
+								[yY]* ) echo ""
+									echo "Ok MONO-Complete will be installed."
+									echo ""
+									apt-get install mono-complete -y
+									echo ""
+									echo "Mono-Complete has been installed."
+									echo "$(cat /root/.fullname) $(cat /root/.callsign) MONO INSTALLATION executed at $timestamp3 " >> $LOGFILE
+									sleep 5
+									break;;
+								[nN]* ) echo ""
+									break;;
+								* )	echo "Please enter Y or N";;
+							esac
+							done
 						sleep 10
 					fi
 				
