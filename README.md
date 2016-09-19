@@ -16,6 +16,7 @@ chmod +x md380-update
 
 To run program type the following at the command line:
 
+cd md380-radio
 sudo ./md380-update
 
 
