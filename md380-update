@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v9.0                                     #####
+######                              v10.0                                    #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v9.0"
+echo "                             v10.0"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v9.0"
+echo "                             v10.0"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -230,17 +230,27 @@ case $choice in
 		read -p 'Is this an initial install of MD380TOOLS? Y or N  ' installvar
 			case $installvar in
 			[yY]* ) echo ""
-				echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
-				echo ""
-				echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION executed at $timestamp1 " >> $LOGFILE
-				apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
-				apt-get install screen -y
-				apt-get install git -y
-				apt-get install python-pip -y
-				pip install pyusb -U
-				git clone https://github.com/walac/pyusb
-				cd pyusb
-				python setup.py install
+					file1="/usr/bin/apt-get"
+					file2="/usr/bin/pacman"
+					if [ -f $file1 ]; then
+						echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
+						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION executed at $timestamp1 " >> $LOGFILE
+						apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
+						apt-get install screen -y
+						apt-get install git -y
+						apt-get install python-pip -y
+						pip install pyusb -U
+						git clone https://github.com/walac/pyusb
+						cd pyusb
+						python setup.py install
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION completed at $timestamp1 " >> $LOGFILE
+					elif [ -f $file2 ]; then
+						echo ""
+						echo "Sorry.  At this time source files are not available for Arch Linux.  Please use Debian os Raspbian."
+						echo ""
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION was unsuccessful due to ARCH LINUX at $timestamp1 " >> $LOGFILE
+					fi
 	
 				break;;
 
@@ -295,6 +305,12 @@ case $choice in
 						make dist clean
 						make all
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
+					elif [ "$dist" == "Arch" ]; then
+						echo ""
+						echo "Sorry ARCH LINUX is currently not supported.  Please use Raspbian or Debian."
+						echo ""
+						sleep 10
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED failed due to ARCH LINUX OS at $timestamp1 " >> $LOGFILE
 					else
 						make clean
 						make all
@@ -458,14 +474,26 @@ case $choice in
 				echo ""
 				echo "Radio should be in NORMAL-MODE!"
 				echo ""
-				echo "Waiting 20 seconds"
-				echo ""
 				sleep 20
-				cd $wd/../md380tools/
-				sudo ./md380-dfu read radio-codeplug.img
-				echo ""
-				echo "Raw (headless) codeplug backup has been made and saved!"
-				echo "$(cat /root/.fullname) $(cat /root/.callsign) RAW BACKUP executed at $timestamp1 " >> $LOGFILE
+					read -p 'Please type in a name for your backup codeplug.  Must not contain any special characters  ' fname1var
+						echo "Please wait while I backup your current codeplug of your MD380 or MD390 radio."
+						cd $wd/../md380tools
+							if [ -d $wd/../codeplugs ]; then
+								./md380-dfu read $wd/../codeplugs/$fname1var.img
+								echo "An image of your codeplug was saved to $wd/../codeplugs/$fname1var.img."
+								echo ""
+								echo "Codeplug (RAW HEADLESS) was successfully backed up from your radio and saved."
+								echo "$(cat /root/.fullname) $(cat /root/.callsign) CODEPLUG BACKUP successfully executed at $timestamp1 " >> $LOGFILE
+								sleep 10
+							else
+								mkdir $wd/../codeplugs
+								./md380-dfu read $wd/../codeplugs/$fname1var.img
+								echo "An image of your codeplug was saved to $wd/../codeplugs/$fname1var.img."
+								echo ""
+								echo "Codeplug (RAW HEADLESS) was successfully backed up from your radio and saved."
+								echo "$(cat /root/.fullname) $(cat /root/.callsign) CODEPLUG BACKUP successfully executed at $timestamp1 " >> $LOGFILE
+								sleep 10
+							fi
 		
 				break;;
 	
@@ -490,6 +518,8 @@ case $choice in
 			echo ""
 			echo "YOU MUST CREATE A BACKUP OF YOUR RADIO FIRST TO USE THIS RESTORE!!!"
 			echo ""
+			echo "IF YOU HAVE ALREADY CREATED A BACKUP, YOU MAY PROCEED."
+			echo ""
 			case $rawrestorevar in
 			[yY]* ) echo ""
 				echo "Please turn radio on."
@@ -502,13 +532,25 @@ case $choice in
 				echo "Waiting 20 seconds"
 				echo ""
 				sleep 20
-				cd $wd/../md380tools/
-				sudo ./md380-dfu write radio-codeplug.img
+					echo "Codeplugs found."
+					files=$( ls $wd/../codeplugs/*.img)
+					counter=0
+					for i in $files ; do
+						let counter=$counter+1
+						echo $counter $i
+					done
 				echo ""
-				echo "Raw (headless) codeplug restore has been made!"
-				echo "$(cat /root/.fullname) $(cat /root/.callsign) RAW RESTORE executed at $timestamp1 " >> $LOGFILE
-				echo ""
-				sleep 5
+					read -p 'Please type in the name for your restore codeplug. Do not include .img.  ' fname3var
+						echo "Please wait while I restore your backup codeplug to your radio."
+						cd $wd/../md380tools
+						echo ""
+						./md380-dfu write $wd/../codeplugs/$fname3var.img
+						echo ""
+						echo "Your backup codeplug $fname3var.img was successfully restored to your radio."
+						echo ""
+						echo "Please turn your radio off then power back on."
+						echo "$(cat /root/.fullname) $(cat /root/.callsign) CODEPLUG RESTORE successfully executed at $timestamp1 " >> $LOGFILE
+						sleep 10
 				break;;
 	
 			[nN]* ) echo ""
