@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v10.5                                    #####
+######                              v10.6                                    #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.5"
+echo "                             v10.6"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.5"
+echo "                             v10.6"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -169,9 +169,9 @@ case $choice in
 					file1="/usr/bin/apt-get"
 					file2="/usr/bin/pacman"
 					if [ -f $file1 ]; then
-						apt-get update -y
+						sudo apt-get update -y
 					elif [ -f $file2 ]; then
-						pacman -Sy
+						sudo pacman -Sy
 					fi
 				echo ""
 				echo "Alright, operating source files update completed."
@@ -199,9 +199,9 @@ case $choice in
 					file1="/usr/bin/apt-get"
 					file2="/usr/bin/pacman"
 					if [ -f $file1 ]; then
-						apt-get upgrade -y
+						sudo apt-get upgrade -y
 					elif [ -f $file2 ]; then
-						pacman -Su
+						sudo pacman -Su
 					fi
 				echo ""
 				echo "Alright, operating systems applications update completed."
@@ -236,14 +236,14 @@ case $choice in
 						echo "Okay.  We will proceed to install the required files to run MD380TOOLS."
 						echo ""
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION executed at $timestamp1 " >> $LOGFILE
-						apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
-						apt-get install screen -y
-						apt-get install git -y
-						apt-get install python-pip -y
-						pip install pyusb -U
-						git clone https://github.com/walac/pyusb
+						sudo apt-get install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi libusb-1.0 python-usb -y
+						sudo apt-get install screen -y
+						sudo apt-get install git -y
+						sudo apt-get install python-pip -y
+						sudo pip install pyusb -U
+						sudo git clone https://github.com/walac/pyusb
 						cd pyusb
-						python setup.py install
+						sudo python setup.py install
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) PREREQUISITE FILES INSTALLATION completed at $timestamp1 " >> $LOGFILE
 					elif [ -f $file2 ]; then
 						echo ""
@@ -288,22 +288,22 @@ case $choice in
 				echo "Okay.  We will proceed to update MD380TOOLS."
 				echo ""
 				cd $wd/../md380tools
-				git pull
+				sudo git pull
 					if [ "$dist" == "Ubuntu" ]; then
 						echo ""
 						echo "OK.  Building for Ubuntu."
 						echo ""
 						sleep 5
-						make clean
-						make all
+						sudo make clean
+						sudo make all
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 					elif [ "$dist" == "Raspbian" ]; then
 						echo ""
 						echo "OK.  Building for Raspbian."
 						echo ""
 						sleep 5
-						make dist clean
-						make all
+						sudo make dist clean
+						sudo make all
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 					elif [ "$dist" == "Arch" ]; then
 						echo ""
@@ -312,8 +312,8 @@ case $choice in
 						sleep 10
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED failed due to ARCH LINUX OS at $timestamp1 " >> $LOGFILE
 					else
-						make clean
-						make all
+						sudo make clean
+						sudo make all
 					fi	
 						sleep 5	
 						echo ""
@@ -327,24 +327,24 @@ case $choice in
 		done
 			else
 				cd $wd/..
-				git clone https://github.com/travisgoodspeed/md380tools
+				sudo git clone https://github.com/travisgoodspeed/md380tools
 				cd md380tools
 					if [ "$dist" == "Ubuntu" ]; then
 						echo ""
 						echo "OK.  Building for Ubuntu."
 						echo ""
 						sleep 5
-						make clean
+						sudo make clean
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 					elif [ "$dist" == "Raspbian" ]; then
 						echo ""
 						echo "OK.  Building for Raspbian."
 						echo ""
 						sleep 5
-						make dist clean
+						sudo make dist clean
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 					else
-						make clean
+						sudo make clean
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
 					fi	
 							
@@ -379,7 +379,7 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
-							make flash
+							sudo make flash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
 							break;;
@@ -426,10 +426,10 @@ case $choice in
 				sleep 20
 				cd $wd/../md380tools/db
 				echo $wd
-				make clean
-				make all
+				sudo make clean
+				sudo make all
 				cd $wd/../md380tools
-				make flashdb
+				sudo make flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
@@ -479,7 +479,7 @@ case $choice in
 						echo "Please wait while I backup your current codeplug of your MD380 or MD390 radio."
 						cd $wd/../md380tools
 							if [ -d $wd/../codeplugs ]; then
-								./md380-dfu read $wd/../codeplugs/$fname1var.img
+								sudo ./md380-dfu read $wd/../codeplugs/$fname1var.img
 								echo "An image of your codeplug was saved to $wd/../codeplugs/$fname1var.img."
 								echo ""
 								echo "Codeplug (RAW HEADLESS) was successfully backed up from your radio and saved."
@@ -487,7 +487,7 @@ case $choice in
 								sleep 10
 							else
 								mkdir $wd/../codeplugs
-								./md380-dfu read $wd/../codeplugs/$fname1var.img
+								sudo ./md380-dfu read $wd/../codeplugs/$fname1var.img
 								echo "An image of your codeplug was saved to $wd/../codeplugs/$fname1var.img."
 								echo ""
 								echo "Codeplug (RAW HEADLESS) was successfully backed up from your radio and saved."
@@ -544,7 +544,7 @@ case $choice in
 						echo "Please wait while I restore your backup codeplug to your radio."
 						cd $wd/../md380tools
 						echo ""
-						./md380-dfu write $wd/../codeplugs/$fname3var.img
+						sudo ./md380-dfu write $wd/../codeplugs/$fname3var.img
 						echo ""
 						echo "Your backup codeplug $fname3var.img was successfully restored to your radio."
 						echo ""
@@ -634,9 +634,9 @@ case $choice in
 							echo "MMDVMHost is already installed"
 							sleep 5
 						else
-							git clone https://github.com/g4klx/MMDVMHost
+							sudo git clone https://github.com/g4klx/MMDVMHost
 							cd MMDVMHost
-							make
+							sudo make
 							echo "MMDVMHost Installation completed"
 							sleep 5
 						fi
@@ -646,12 +646,25 @@ case $choice in
 							echo "MMDVMHost is already installed"
 							sleep 5
 						else
-							git clone https://github.com/g4klx/MMDVMHost
+							sudo git clone https://github.com/g4klx/MMDVMHost
 							cd MMDVMHost
-							make
+							sudo make
 							echo "MMDVMHost Installation completed"
 							sleep 5
 						fi
+				else
+					cd ../Downloads
+						if [ -d "MMDVMHost" ]; then
+							echo "MMDVMHost is already installed"
+							sleep 5
+						else
+							sudo git clone https://github.com/g4klx/MMDVMHost
+							cd MMDVMHost
+							sudo make
+							echo "MMDVMHost Installation completed"
+							sleep 5
+						fi
+
 				fi
 				sleep 5
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) MMDVMHOST INSTALL executed at $timestamp1 " >> $LOGFILE
@@ -673,13 +686,13 @@ case $choice in
 			[yY]* ) echo ""
 
 				cd /lib/systemd/system/
-				wget http://66.75.80.170/mmdvmhost.service
-				wget http://66.75.80.170/mmdvmhost.timer
-				ln -s /lib/systemd/system/mmdvmhost.service /etc/systemd/system/mmdvmhost.service
-				ln -s /lib/systemd/system/mmdvmhost.timer /etc/systemd/system/mmdvmhost.timer
-				systemctl daemon-reload
-				systemctl enable mmdvmhost.service
-				systemctl enable mmdvmhost.timer
+				sudo wget http://66.75.80.170/mmdvmhost.service
+				sudo wget http://66.75.80.170/mmdvmhost.timer
+				sudo ln -s /lib/systemd/system/mmdvmhost.service /etc/systemd/system/mmdvmhost.service
+				sudo ln -s /lib/systemd/system/mmdvmhost.timer /etc/systemd/system/mmdvmhost.timer
+				sudo systemctl daemon-reload
+				sudo systemctl enable mmdvmhost.service
+				sudo systemctl enable mmdvmhost.timer
 				echo ""
 				echo "Files mmdvmhost.service and mmdvmhost.timer has been added and enabled."
 				echo ""
@@ -701,7 +714,7 @@ case $choice in
 		case $restartmmdvmvar in
 			[yY]* ) echo ""
 
-				systemctl restart mmdvmhost.service
+				sudo systemctl restart mmdvmhost.service
 				echo ""
 				echo "MMDVMHOST has been restarted."
 				echo ""
@@ -722,7 +735,7 @@ case $choice in
 		read -p 'Are you sure you want to STOP MMDVMHost?  Y or N  '  stopmmdvmvar
 		case $stopmmdvmvar in
 			[yY]* ) echo ""
-				systemctl stop mmdvmhost.service
+				sudo systemctl stop mmdvmhost.service
 				echo ""
 				echo "STOPPPING MMDVMHOST....."
 				sleep 5
@@ -744,7 +757,7 @@ case $choice in
 		read -p 'Are you sure you want to START MMDVMHost?  Y or N  '  stopmmdvmvar
 		case $stopmmdvmvar in
 			[yY]* ) echo ""
-				systemctl start mmdvmhost.service
+				sudo systemctl start mmdvmhost.service
 				echo ""
 				echo "STARTING MMDVMHOST....."
 				sleep 5
@@ -770,7 +783,7 @@ case $choice in
 				echo ""
 					if [ -d /var/www/html ]; then
 						cd /var/www/html
-						git clone https://github.com/dg9vh/MMDVMHost-Dashboard
+						sudo git clone https://github.com/dg9vh/MMDVMHost-Dashboard
 						echo ""
 						echo "MMDVMHost-Dashboard has been installed"
 						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
@@ -779,7 +792,7 @@ case $choice in
 						sleep 5
 					elif [ -d /srv/http ]; then
 						cd /srv/http
-						git clone https://github.com/dg9vh/MMDVMHost-Dashboard
+						sudo git clone https://github.com/dg9vh/MMDVMHost-Dashboard
 						echo ""
 						echo "MMDVMHost-Dashboard has been installed"
 						echo "To access MMDVMHost-Dashboard, please goto http://127.0.0.1/MMDVMHost-Dashboard"
@@ -813,7 +826,7 @@ case $choice in
 				echo ""
 					if [ -d /var/www/html ]; then
 						cd /var/www/html
-						git clone https://github.com/zarya/BrandMeister-Dashboard
+						sudo git clone https://github.com/zarya/BrandMeister-Dashboard
 						echo ""
 						echo "BrandMeister-Dashboard has been installed"
 						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
@@ -822,7 +835,7 @@ case $choice in
 						sleep 5
 					elif [ -d /srv/http ]; then
 						cd /srv/http
-						git clone https://github.com/zarya/BrandMeister-Dashboard
+						sudo git clone https://github.com/zarya/BrandMeister-Dashboard
 						echo ""
 						echo "BrandMeister-Dashboard has been installed"
 						echo "To access BrandMeister-Dashboard, please goto http://127.0.0.1/BrandMeister-Dashboard"
@@ -932,12 +945,12 @@ case $choice in
 					echo ""
 					sudo pacman -Syu
 					sudo pacman -S apache
-					systemctl enable httpd
-					systemctl restart httpd
+					sudo systemctl enable httpd
+					sudo systemctl restart httpd
 					sudo pacman -S mysql
 					sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-					systemctl enable mysqld
-					systemctl restart mysqld
+					sudo systemctl enable mysqld
+					sudo systemctl restart mysqld
 					sudo mysql_secure_installation
 					sudo pacman -S php php-apache
 					sudo systemctl restart httpd
@@ -1037,7 +1050,7 @@ case $choice in
 			[yY]* ) echo ""
 				echo "OK.  AUTOSTART MD380-UPDATE on login enabled."
 				echo ""
-				echo "sudo ~/md380-radio/md380-update" >> ~/.bash_profile
+				sudo echo "sudo ~/md380-radio/md380-update" >> ~/.bash_profile
 				echo "NEXT LOGIN WILL TAKE YOU STRAIGHT TO MD380-UPDATE MENU."
 				echo ""
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380-UPDATE AUTOSTART executed at $timestamp1 " >> $LOGFILE
@@ -1062,8 +1075,8 @@ case $choice in
 				echo "OK.  DV4MF2 CONTROL PANEL will be installed for DV4MINI."
 				echo ""
 				cd ~Downloads
-				wget http://66.75.80.170/DV4MF2.tgz
-				tar zxvf DV4MF2.tgz
+				sudo wget http://66.75.80.170/DV4MF2.tgz
+				sudo tar zxvf DV4MF2.tgz
 					file1="/usr/bin/mono"
 					if [ -f $file1 ]; then
 						echo "Your operating system meets the requirement to run DV4MF2 control panel."
@@ -1078,7 +1091,7 @@ case $choice in
 								[yY]* ) echo ""
 									echo "Ok MONO-Complete will be installed."
 									echo ""
-									apt-get install mono-complete -y
+									sudo apt-get install mono-complete -y
 									echo ""
 									echo "Mono-Complete has been installed."
 									echo "$(cat /root/.fullname) $(cat /root/.callsign) MONO INSTALLATION executed at $timestamp3 " >> $LOGFILE
