@@ -23,7 +23,7 @@ read -d . VERSION < /etc/debian_version
 			echo ""
 			echo "OK.  OS is DEBIAN JESSIE."
 			echo ""
-			sleep 5
+			sleep 1
 		fi
 
 trap ctrl_c INT
@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v10.6                                    #####
+######                              v10.7                                    #####
 ##################################################################################
 ##################################################################################
 
@@ -57,23 +57,23 @@ if [ "$dist" == "Ubuntu" ]; then
 	echo ""
 	echo "OK.  OS is UBUNTU."
 	echo ""
-	sleep 5
+	sleep 2
 elif [ "$dist" == "Debian" ]; then
 	echo ""
 	echo ""
 	echo "OK.  OS is DEBIAN JESSIE."
 	echo ""
-	sleep 5
+	sleep 2
 elif [ "$dist" == "Raspbian" ]; then
 	echo ""
 	echo "OK.  OS is RASPBIAN."
 	echo ""
-	sleep 5
+	sleep 2
 elif [ "$dist" == "Arch" ]; then
 	echo ""
 	echo "OK.  OS is ARCH LINUX."
 	echo ""
-	sleep 5
+	sleep 2
 else
 	echo ""
 fi	
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.6"
+echo "                             v10.7"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.6"
+echo "                             v10.7"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -294,7 +294,7 @@ case $choice in
 						echo "OK.  Building for Ubuntu."
 						echo ""
 						sleep 5
-						sudo make clean
+						sudo make distclean
 						sudo make all
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 					elif [ "$dist" == "Raspbian" ]; then
@@ -302,7 +302,7 @@ case $choice in
 						echo "OK.  Building for Raspbian."
 						echo ""
 						sleep 5
-						sudo make dist clean
+						sudo make distclean
 						sudo make all
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED executed at $timestamp1 " >> $LOGFILE
 					elif [ "$dist" == "Arch" ]; then
@@ -312,7 +312,7 @@ case $choice in
 						sleep 10
 						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS UPDATED failed due to ARCH LINUX OS at $timestamp1 " >> $LOGFILE
 					else
-						sudo make clean
+						sudo make distclean
 						sudo make all
 					fi	
 						sleep 5	
@@ -325,33 +325,33 @@ case $choice in
 			* ) 	echo "Please enter Y or N.";;
 		esac
 		done
-			else
-				cd $wd/..
-				sudo git clone https://github.com/travisgoodspeed/md380tools
-				cd md380tools
-					if [ "$dist" == "Ubuntu" ]; then
-						echo ""
-						echo "OK.  Building for Ubuntu."
-						echo ""
-						sleep 5
-						sudo make clean
-						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-					elif [ "$dist" == "Raspbian" ]; then
-						echo ""
-						echo "OK.  Building for Raspbian."
-						echo ""
-						sleep 5
-						sudo make dist clean
-						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-					else
-						sudo make clean
-						echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
-					fi	
-							
-				make all
-				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
+	else
+		cd $wd/..
+		sudo git clone https://github.com/travisgoodspeed/md380tools
+		cd md380tools
+			if [ "$dist" == "Ubuntu" ]; then
+				echo ""
+				echo "OK.  Building for Ubuntu."
+				echo ""
 				sleep 5
-			fi
+				sudo make clean
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+			elif [ "$dist" == "Raspbian" ]; then
+				echo ""
+				echo "OK.  Building for Raspbian."
+				echo ""
+				sleep 5
+				sudo make dist clean
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+			else
+				sudo make clean
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALL executed at $timestamp1 " >> $LOGFILE
+			fi	
+					
+		make all
+		echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
+		sleep 5
+	fi
 	;;
 	5) echo ""
 
@@ -379,7 +379,7 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
-							sudo make flash
+							sudo make doflash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
 							break;;
@@ -429,7 +429,7 @@ case $choice in
 				sudo make clean
 				sudo make all
 				cd $wd/../md380tools
-				sudo make flashdb
+				sudo make updatedb flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
