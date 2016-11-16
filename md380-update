@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v10.7.1                                    #####
+######                              v11                                      #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.7.1"
+echo "                             v11"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,35 +114,36 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v10.7.1"
+echo "                             v11"
 
 echo ""
 echo "1)   Update source files for operating system"
 echo "2)   Update applications for operating system"
 echo "3)   Install Prerequisite programs for MD380TOOLS"
 echo "4)   Install or update MD380TOOLS"
-echo "5)   Flash new hacked firmware for MD380 or MD390 radio"
-echo "6)   Flash DMR User Database to MD380 or MD390 radio"
-echo "7)   Make a backup of raw (headless) codeplug from MD380 or MD390 radio"
-echo "8)   Restore a backup of raw (headless) codeplug to MD380 or MD390 radio"
-echo "9)   Upload PREDEFINED CODEPLUG for MD380 or MD390 radio"
-echo "10)  Install MMDVMHost"
-echo "11)  Install service related programs for MMDVMHost"
+echo "5)   Flash new hacked firmware for MD380 or MD390 radio (NON-GPS RADIOS)"
+echo "6)   Flash new hacked firmware for MD380 or MD390 radio (GPS RADIOS)"
+echo "7)   Flash DMR User Database to MD380 or MD390 radio"
+echo "8)   Make a backup of raw (headless) codeplug from MD380 or MD390 radio"
+echo "9)   Restore a backup of raw (headless) codeplug to MD380 or MD390 radio"
+echo "10)   Upload PREDEFINED CODEPLUG for MD380 or MD390 radio"
+echo "11)  Install MMDVMHost"
+echo "12)  Install service related programs for MMDVMHost"
 echo "     **********************************************************************"
 echo "          USE OPTION 10 ONLY IF MMDVMHOST IS IN THE FOLLOWING LOCATION:"      
 echo "                         /home/mmdvm/Downloads/MMDVMHost              "      
 echo "     **********************************************************************"
-echo "12)  RESTART MMDVMHost"
-echo "13)  STOP MMDVMHost"
-echo "14)  START MMDVMHost"
-echo "15)  Install MMDVMHost-Dashboard"
-echo "16)  Install BRANDMEISTER-Dashboard"
-echo "17)  Install WEB SERVICES"
-echo "18)  Change root password"
-echo "19)  REBOOT RASPBERRY PI"
-echo "20)  SHUTDOWN RASPBERRY PI"
-echo "21)  Enable md380-update autostart on login"
-echo "22)  Install DV4MF2 Control Panel for DV4MINI"
+echo "13)  RESTART MMDVMHost"
+echo "14)  STOP MMDVMHost"
+echo "15)  START MMDVMHost"
+echo "16)  Install MMDVMHost-Dashboard"
+echo "17)  Install BRANDMEISTER-Dashboard"
+echo "18)  Install WEB SERVICES"
+echo "19)  Change root password"
+echo "20)  REBOOT RASPBERRY PI"
+echo "21)  SHUTDOWN RASPBERRY PI"
+echo "22)  Enable md380-update autostart on login"
+echo "23)  Install DV4MF2 Control Panel for DV4MINI"
 echo "     *******  DV4MINI INCLUDED  ******"
 echo ""
 echo "99)  EXIT PROGRAM"
@@ -379,6 +380,7 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
+							sudo make clean
 							sudo make flash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
@@ -406,6 +408,59 @@ case $choice in
 		done
 	;;
 	6) echo ""
+
+		while true
+		do
+		clear
+		wd=$(pwd)
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Would you like to flash the firmware for your MD380G or MD390G? Y or N  ' flashfwvar
+			case $flashfwvar in
+			[yY]* ) echo ""
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Please turn radio off."
+				echo "Put your Radio in DFU-MODE"
+				echo "Hold PTT and button above at the same time and turn radio on."
+				echo "Waiting 20 seconds, after which flashing of your radio will start."
+				echo ""
+
+					while true
+					do
+					read -p 'Are you in DFU mode?  Y or N  ' dfumodevar
+						case $dfumodevar in
+						[yY]* ) echo ""
+							echo "Proceeding to update radio firmware."
+							cd $wd/../md380tools
+							sudo make clean
+							sudo make flash_S13
+							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS GPS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
+							sleep 10
+							break;;
+						[nN]* ) echo ""
+							echo ""
+							break;;
+						* ) 
+					esac
+					done
+				
+				break;;
+
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "Okay"
+				echo ""
+				echo ""
+				echo ""
+				break;;
+
+			* )	echo "Please enter Y or N";;
+			esac
+		done
+	;;	
+	7) echo ""
 	
 		while true
 		do
@@ -457,7 +512,7 @@ case $choice in
 			esac
 		done	
 	;;
-	7) echo ""
+	8) echo ""
 	
 		while true
 		do
@@ -508,7 +563,7 @@ case $choice in
 			esac
 		done	
 	;;
-	8) echo ""
+	9) echo ""
 		while true
 		do
 		clear
@@ -564,7 +619,7 @@ case $choice in
 			esac
 		done	
 	;;
-	9) echo ""
+	10) echo ""
 		while true
 		do
 		clear
@@ -613,7 +668,7 @@ case $choice in
 			esac
 		done	
 	;;
-	10) echo ""
+	11) echo ""
 		while true
 		do
 		clear
@@ -676,7 +731,7 @@ case $choice in
 		done
 
 	;;
-	11) echo ""
+	12) echo ""
 		while true
 		do
 		clear
@@ -705,7 +760,7 @@ case $choice in
 		done
 
 	;;
-	12) echo ""
+	13) echo ""
 		while true
 		do
 		clear
@@ -727,7 +782,7 @@ case $choice in
 		done
 
 	;;
-	13) echo ""
+	14) echo ""
 		while true
 		do
 		clear
@@ -749,7 +804,7 @@ case $choice in
 			esac
 		done
 	;;
-	14) echo ""
+	15) echo ""
 		while true
 		do
 		clear
@@ -771,7 +826,7 @@ case $choice in
 			esac
 		done
 	;;
-	15) echo ""
+	16) echo ""
 		while true
 		do
 		clear
@@ -814,7 +869,7 @@ case $choice in
 			esac
 		done
 	;;
-	16) echo ""
+	17) echo ""
 		while true
 		do
 		clear
@@ -856,7 +911,7 @@ case $choice in
 			esac
 		done
 	;;
-	17) echo ""
+	18) echo ""
 		while true
 		do
 		clear
@@ -971,7 +1026,7 @@ case $choice in
 			esac
 		done
 	;;
-	18) echo ""
+	19) echo ""
 		while true
 		do
 		clear
@@ -996,7 +1051,7 @@ case $choice in
 			esac
 		done
 	;;
-	19) echo ""
+	20) echo ""
 		while true
 		do
 		clear
@@ -1017,7 +1072,7 @@ case $choice in
 			esac
 		done
 	;;
-	20) echo ""
+	21) echo ""
 		while true
 		do
 		clear
@@ -1040,7 +1095,7 @@ case $choice in
 			esac
 		done
 	;;
-	21) echo ""
+	22) echo ""
 		while true
 		do
 		clear
@@ -1064,7 +1119,7 @@ case $choice in
 			esac
 		done
 	;;
-	22) echo ""
+	23) echo ""
 		while true
 		do
 		clear
