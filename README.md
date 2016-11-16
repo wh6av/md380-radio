@@ -45,9 +45,12 @@ Instructions to flash firmware to your radio as follows:
 
 1 - Please run options 1, 2, 3 and 4 in order.  This is to ensure your RPi is up to date with it's own software.  It will also install all pre-requisite files needed to be installed to run md380-tools.  Option 4 is to install md380tools.
 
-2 - Run option 5 to update radio firmware to hacked firmware.
+2 - Run option 5 to update MD380/MD390 radio (NON-GPS) firmware to hacked firmware.
 
-3 - Run option 6 to install and/or update DMR ID database to your radio.
+OR
+    Run option 6 to update MD380G/MD390G radio (GPS) firmware to hacked firmware.
+    
+3 - Run option 7 to install and/or update DMR ID database to your radio.
 
 That's it to flashing firmware and installing and/or updating DMR ID database.
 
