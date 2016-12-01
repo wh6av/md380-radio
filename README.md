@@ -4,26 +4,9 @@ All questions should be directed to me via wh6av@allpuremedia.com.
 
 This program was created for all users of the MD-380 and MD-390 radios.  Please note that this is intended to be run from a Raspberry Pi machine.  It can also be used on a Debian or Raspbian installation also.
 
-There are 2 ways to install program.
+SETUP PROCEDURE
 
-SETUP PROCEDURE 1
-
-To install program unto Raspberry Pi, Debian or Raspbian, login via SSH and type the following commands at the command line:
-
-wget -N  http://66.75.80.170/md380-update
-
-chmod +x md380-update
-
-To run program type the following at the command line:
-
-cd md380-radio
-
-sudo ./md380-update
-
-
-SETUP PROCEDURE 2
-
-GITHUB way, please follow as instructed to install program:
+Please follow as instructed to install program:
 
 Login via SSH and run following command:
 
