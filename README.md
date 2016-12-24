@@ -10,11 +10,11 @@ Please follow as instructed to install program:
 
 Login via SSH and run following command:
 
-apt-get install git -y
+sudo apt-get install git -y
 
 Wait for installation of GIT to complete.  You will be back at CLI, command line interface prompt.  Type the following:
 
-git clone http://github.com/wh6av/md380-radio
+sudo git clone http://github.com/wh6av/md380-radio
 
 Wait for cloning to complete.  You will be back at CLI.  Type the following to change into md380-radio directory:
 
