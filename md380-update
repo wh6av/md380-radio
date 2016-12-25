@@ -484,7 +484,7 @@ case $choice in
 				sudo make clean
 				sudo make all
 				cd $wd/../md380tools
-				sudo make updatedb flashdb
+				sudo make flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
