@@ -4,6 +4,14 @@ All questions should be directed to me via wh6av@allpuremedia.com.
 
 This program was created for all users of the MD-380 and MD-390 radios.  Please note that this is intended to be run from a Raspberry Pi machine.  It can also be used on a Debian or Raspbian installation also.
 
+To update to most current version, please run the following commands:
+
+cd md380-radio
+
+git pull
+
+________________________________________________________________________________________________________________________________________
+
 SETUP PROCEDURE
 
 Please follow as instructed to install program:
