@@ -554,7 +554,8 @@ case $choice in
 	
 			* )	echo "Please enter Y or N";;
 			esac
-		done	
+		done
+	;;	
 	72) echo ""
 	
 		while true
@@ -574,10 +575,11 @@ case $choice in
 				echo "Waiting 10 seconds"
 				echo ""
 				sleep 10
-				cd $wd/../md380tools
+				cd $wd/../md380tools/db/
 				wget "http://42561.noip.us/current-users.csv"
 				wc -c < db/current-users.csv > user.bin
 				cat db/current-users.csv >> user.bin
+				cd $wd/../md380tools/
 				sudo make flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) WORLDWIDE DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
