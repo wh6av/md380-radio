@@ -10,11 +10,11 @@ Please follow as instructed to install program:
 
 Login via SSH and run following command:
 
-apt-get install git -y
+sudo apt-get install git -y
 
 Wait for installation of GIT to complete.  You will be back at CLI, command line interface prompt.  Type the following:
 
-git clone http://github.com/wh6av/md380-radio
+sudo git clone http://github.com/wh6av/md380-radio
 
 Wait for cloning to complete.  You will be back at CLI.  Type the following to change into md380-radio directory:
 
@@ -33,7 +33,9 @@ Instructions to flash firmware to your radio as follows:
 OR
     Run option 6 to update MD380G/MD390G radio (GPS) firmware to hacked firmware.
     
-3 - Run option 7 to install and/or update DMR ID database to your radio.
+3 - Run option 7 to install and/or update DMR ID database to your radio. (NON-EUROPEAN)
+    Run option 71 to install and/or update DMR ID database to your radio. (EUROPEAN)
+    Run option 72 to install ENTIRE DMR ID database to your radio.
 
 That's it to flashing firmware and installing and/or updating DMR ID database.
 
