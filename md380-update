@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v11.5                                    #####
+######                              v12                                      #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v11.5"
+echo "                             v12"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v11.5"
+echo "                             v12"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -123,10 +123,12 @@ echo "3)   Install Prerequisite programs for MD380TOOLS"
 echo "4)   Install or update MD380TOOLS"
 echo "5)   Flash new hacked firmware for MD380 or MD390 radio (NON-GPS RADIOS)"
 echo "6)   Flash new hacked firmware for MD380 or MD390 radio (GPS RADIOS)"
-echo "7)   Flash DMR User Database to MD380 or MD390 radio"
+echo "7)   Flash DMR User Database to MD380 or MD390 radio (NON EUROPEAN)"
+echo "71)   Flash DMR User Database to MD380 or MD390 radio (EUROPEAN)"
+echo "72)   Flash DMR User Database to MD380 or MD390 radio (ALL COUNTRIES)"
 echo "8)   Make a backup of raw (headless) codeplug from MD380 or MD390 radio"
 echo "9)   Restore a backup of raw (headless) codeplug to MD380 or MD390 radio"
-echo "10)   Upload PREDEFINED CODEPLUG for MD380 or MD390 radio"
+echo "10)  Upload PREDEFINED CODEPLUG for MD380 or MD390 radio"
 echo "11)  Install MMDVMHost"
 echo "12)  Install service related programs for MMDVMHost"
 echo "     **********************************************************************"
@@ -380,7 +382,6 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
-							sudo make clean
 							sudo make flash
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
@@ -433,7 +434,6 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
-							sudo make clean
 							sudo make flash_S13
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS GPS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
@@ -476,15 +476,11 @@ case $choice in
 				echo "Please turn radio on as you normally do."
 				echo "Radio should not be in DFU-MODE!!!"
 				echo ""
-				echo "Waiting 20 seconds"
+				echo "Waiting 10 seconds"
 				echo ""
-				sleep 20
-				cd $wd/../md380tools/db
-				echo $wd
-				sudo make clean
-				sudo make all
+				sleep 10
 				cd $wd/../md380tools
-				sudo make flashdb
+				sudo make updatedb flashdb
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
@@ -512,6 +508,103 @@ case $choice in
 			esac
 		done	
 	;;
+	71) echo ""
+	
+		while true
+		do
+		clear
+		wd=$(pwd)
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Would you like to flash the EUROPEAN DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
+			case $flashdbvar in
+			[yY]* ) echo ""
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Please turn radio on as you normally do."
+				echo "Radio should not be in DFU-MODE!!!"
+				echo ""
+				echo "Waiting 10 seconds"
+				echo ""
+				sleep 10
+				cd $wd/../md380tools
+				sudo make updatedb_eur flashdb
+				echo $wd
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) EUROPEAN DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
+				echo "Once radio is turned on, make sure USERSCSV is enabled."
+				echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
+				echo ""
+				echo ""
+				echo "Enjoy!"
+				echo "73 and Aloha!"
+				echo ""
+				echo "Gescio Alpuro - WH6AV"
+		
+				break;;
+	
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "73 and Aloha!"
+				echo "Gescio Alpuro - WH6AV"
+				echo ""
+				echo ""
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done	
+	72) echo ""
+	
+		while true
+		do
+		clear
+		wd=$(pwd)
+		timestamp1=`date --rfc-3339=seconds`
+		read -p 'Would you like to flash the WORLDWIDE DMR USER DATABASE for your MD380 or MD390? Y or N  ' flashdbvar
+			case $flashdbvar in
+			[yY]* ) echo ""
+				echo ""
+				echo "Please ensure USB cable is connected to your RPi and Radio"
+				echo ""
+				echo "Please turn radio on as you normally do."
+				echo "Radio should not be in DFU-MODE!!!"
+				echo ""
+				echo "Waiting 10 seconds"
+				echo ""
+				sleep 10
+				cd $wd/../md380tools
+				wget "http://42561.noip.us/current-users.csv"
+				wc -c < db/current-users.csv > user.bin
+				cat db/current-users.csv >> user.bin
+				sudo make flashdb
+				echo $wd
+				echo "$(cat /root/.fullname) $(cat /root/.callsign) WORLDWIDE DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
+				echo "Once radio is turned on, make sure USERSCSV is enabled."
+				echo "Select MENU, goto UTILITIES, goto MD380TOOLS, select ENABLE and exit out to main screen."
+				echo ""
+				echo ""
+				echo "Enjoy!"
+				echo "73 and Aloha!"
+				echo ""
+				echo "Gescio Alpuro - WH6AV"
+		
+				break;;
+	
+			[nN]* ) echo ""
+				echo ""
+				echo ""
+				echo "73 and Aloha!"
+				echo "Gescio Alpuro - WH6AV"
+				echo ""
+				echo ""
+				echo ""
+				break;;
+	
+			* )	echo "Please enter Y or N";;
+			esac
+		done	
 	8) echo ""
 	
 		while true
@@ -741,8 +834,8 @@ case $choice in
 			[yY]* ) echo ""
 
 				cd /lib/systemd/system/
-				sudo wget http://42561.noip.us/mmdvmhost.service
-				sudo wget http://42561.noip.us/mmdvmhost.timer
+				sudo wget http://66.75.80.170/mmdvmhost.service
+				sudo wget http://66.75.80.170/mmdvmhost.timer
 				sudo ln -s /lib/systemd/system/mmdvmhost.service /etc/systemd/system/mmdvmhost.service
 				sudo ln -s /lib/systemd/system/mmdvmhost.timer /etc/systemd/system/mmdvmhost.timer
 				sudo systemctl daemon-reload
@@ -1130,7 +1223,7 @@ case $choice in
 				echo "OK.  DV4MF2 CONTROL PANEL will be installed for DV4MINI."
 				echo ""
 				cd ~Downloads
-				sudo wget http://42561.noip.us/DV4MF2.tgz
+				sudo wget http://66.75.80.170/DV4MF2.tgz
 				sudo tar zxvf DV4MF2.tgz
 					file1="/usr/bin/mono"
 					if [ -f $file1 ]; then
