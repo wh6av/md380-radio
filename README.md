@@ -37,7 +37,7 @@ OR
 
     Run option 71 to install and/or update DMR ID database to your radio. (EUROPEAN)
 
-    Run option 72 to install ENTIRE DMR ID database to your radio.
+    Run option 72 to install ENTIRE DMR ID database to your radio. (WORLDWIDE)
 
 That's it to flashing firmware and installing and/or updating DMR ID database.
 
