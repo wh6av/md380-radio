@@ -604,7 +604,8 @@ case $choice in
 	
 			* )	echo "Please enter Y or N";;
 			esac
-		done	
+		done
+	;;
 	8) echo ""
 	
 		while true
