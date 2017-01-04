@@ -121,11 +121,12 @@ echo "1)   Update source files for operating system"
 echo "2)   Update applications for operating system"
 echo "3)   Install Prerequisite programs for MD380TOOLS"
 echo "4)   Install or update MD380TOOLS"
+echo "41)  RESTORE RADIO TO ORIGINAL FIRMWARE"
 echo "5)   Flash new hacked firmware for MD380 or MD390 radio (NON-GPS RADIOS)"
 echo "6)   Flash new hacked firmware for MD380 or MD390 radio (GPS RADIOS)"
 echo "7)   Flash DMR User Database to MD380 or MD390 radio (NON EUROPEAN)"
-echo "71)   Flash DMR User Database to MD380 or MD390 radio (EUROPEAN)"
-echo "72)   Flash DMR User Database to MD380 or MD390 radio (ALL COUNTRIES)"
+echo "71)  Flash DMR User Database to MD380 or MD390 radio (EUROPEAN)"
+echo "72)  Flash DMR User Database to MD380 or MD390 radio (ALL COUNTRIES)"
 echo "8)   Make a backup of raw (headless) codeplug from MD380 or MD390 radio"
 echo "9)   Restore a backup of raw (headless) codeplug to MD380 or MD390 radio"
 echo "10)  Upload PREDEFINED CODEPLUG for MD380 or MD390 radio"
@@ -355,6 +356,65 @@ case $choice in
 		echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS INSTALLED at $timestamp1 " >> $LOGFILE
 		sleep 5
 	fi
+	;;
+	41) echo ""
+		while true
+		do
+		clear
+		wd=$(pwd)
+		timestamp1=`date --rfc-3339=seconds`
+				echo "1.  Restore MD-380/MD-390 to original D02 firmware (NONGPS)"
+				echo "2.  Restore MD-380/MD-390 to original D03 firmware (NONGPS)"
+				echo "3.  Restore MD-380/MD-390 to original S13 firmware (GPS)"
+				echo "X.  Exit to main menu"
+				read -p 'Please select which option you would like to perform.  ' fwvar
+					case $fwvar in
+					[1]* ) echo ""
+						echo "Please ensure USB cable is connected to your RPi and Radio"
+						echo ""
+						echo "Please turn radio off."
+						echo "Put your Radio in DFU-MODE"
+						echo "Hold PTT and button above at the same time and turn radio on."
+						echo "Waiting 15 seconds, after which red and green flashing led of your radio will start."
+						echo ""
+						sleep 15
+						cd $wd/../md380tools/
+						sudo make clean
+						sudo make flash_original_D02
+						sleep 15
+						break;;
+					[2]* ) echo ""
+						echo "Please ensure USB cable is connected to your RPi and Radio"
+						echo ""
+						echo "Please turn radio off."
+						echo "Put your Radio in DFU-MODE"
+						echo "Hold PTT and button above at the same time and turn radio on."
+						echo "Waiting 15 seconds, after which red and green flashing led of your radio will start."
+						echo ""
+						sleep 15
+						cd $wd/../md380tools/
+						sudo make clean
+						sudo make flash_original_D03
+						sleep 15
+						break;;
+					[3]* ) echo ""
+						echo "Please ensure USB cable is connected to your RPi and Radio"
+						echo ""
+						echo "Please turn radio off."
+						echo "Put your Radio in DFU-MODE"
+						echo "Hold PTT and button above at the same time and turn radio on."
+						echo "Waiting 15 seconds, after which red and green flashing led of your radio will start."
+						echo ""
+						sleep 15
+						cd $wd/../md380tools/
+						sudo make clean
+						sudo make flash_S13
+						sleep 15
+						break;;
+					[Xx]* ) break;;
+					* )	echo "Please enter 1, 2, 3 or x";;
+			esac
+		done
 	;;
 	5) echo ""
 
@@ -1232,7 +1292,7 @@ case $choice in
 				echo "OK.  DV4MF2 CONTROL PANEL will be installed for DV4MINI."
 				echo ""
 				cd ~Downloads
-				sudo wget http://66.75.80.170/DV4MF2.tgz
+				sudo wget http://42561.noip.us/DV4MF2.tgz
 				sudo tar zxvf DV4MF2.tgz
 					file1="/usr/bin/mono"
 					if [ -f $file1 ]; then
