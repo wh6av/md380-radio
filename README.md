@@ -51,7 +51,7 @@ That's it to flashing firmware and installing and/or updating DMR ID database.
 
 To update md380tools just run option 4. 
 
-To update DMR ID Database once a week, run option 7.  You may update as often as you want.  I update every 3 or 4 days.
+To update DMR ID Database once a week, run option 7, 71 or 72.  You may update as often as you want.  I update every 2 days.
 
 73 and Aloha!
 
