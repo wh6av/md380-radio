@@ -40,7 +40,7 @@ function ctrl_c() {
 ###### This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016      #####
 ###### Questions, bugs or to request additional features can be directed     #####
 ###### to my email address wh6av@allpuremedia.com                            #####
-######                              v12                                      #####
+######                              v12.5                                      #####
 ##################################################################################
 ##################################################################################
 
@@ -82,7 +82,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v12"
+echo "                             v12.5"
 
 [ $uid -ne 0 ] && { echo "YOU MUST BE ROOT TO RUN THIS SCRIPT"; exit 1; }
 
@@ -114,7 +114,7 @@ echo "PLEASE DO NOT COPY, MODIFY OR ALTER THIS PROGRAM"
 echo "This program is copywritten by Gescio Oteco Alpuro - WH6AV ©2016"
 echo "Questions, bugs or to request additional features can be directed"
 echo "to my email address wh6av@allpuremedia.com"
-echo "                             v12"
+echo "                             v12.5"
 
 echo ""
 echo "1)   Update source files for operating system"
@@ -494,6 +494,7 @@ case $choice in
 						[yY]* ) echo ""
 							echo "Proceeding to update radio firmware."
 							cd $wd/../md380tools
+							sudo make clean
 							sudo make flash_S13
 							echo "$(cat /root/.fullname) $(cat /root/.callsign) MD380TOOLS GPS FIRMWARE INSTALLATION executed at $timestamp1 " >> $LOGFILE
 							sleep 10
