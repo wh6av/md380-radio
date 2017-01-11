@@ -639,14 +639,15 @@ case $choice in
 				cd $wd/../md380tools/db/
 				sudo rm current-users.csv*
 				sudo wget "http://42561.noip.us/current-users.csv"
+				sudo cat tgs.csv >> current-users.csv
 				sudo sed -e 's///g' current-users.csv >> new-current-users.csv
 				sudo rm current-users.csv
 				sudo mv new-current-users.csv current-users.csv
 				cd $wd/../md380tools/
-				sudo wc -c < db/current-users.csv > newuser.bin
-				sudo cat db/current-users.csv >> newuser.bin
-				sed -e 's///g' newuser.bin > user.bin
-				sudo ./md380-tool spiflashwrite user.bin 0x100000
+				sed -e 's///g' db/current-users.csv > db/currentusers.csv
+				sudo wc -c < db/currentusers.csv > user.bin
+				sudo cat db/currentusers.csv >> user.bin
+				#sudo ./md380-tool spiflashwrite user.bin 0x100000
 				echo $wd
 				echo "$(cat /root/.fullname) $(cat /root/.callsign) WORLDWIDE DMR ID USER DATABASE executed at $timestamp1 " >> $LOGFILE
 				echo "Once radio is turned on, make sure USERSCSV is enabled."
