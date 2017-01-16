@@ -905,8 +905,8 @@ case $choice in
 			[yY]* ) echo ""
 
 				cd /lib/systemd/system/
-				sudo wget http://66.75.80.170/mmdvmhost.service
-				sudo wget http://66.75.80.170/mmdvmhost.timer
+				sudo wget http://42561.noip.us/mmdvmhost.service
+				sudo wget http://42561.noip.us/mmdvmhost.timer
 				sudo ln -s /lib/systemd/system/mmdvmhost.service /etc/systemd/system/mmdvmhost.service
 				sudo ln -s /lib/systemd/system/mmdvmhost.timer /etc/systemd/system/mmdvmhost.timer
 				sudo systemctl daemon-reload
