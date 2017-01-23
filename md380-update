@@ -639,7 +639,6 @@ case $choice in
 				cd $wd/../md380tools/db/
 				sudo rm current-users.csv*
 				sudo wget "http://42561.noip.us/current-users.csv"
-				sudo cat tgs.csv >> current-users.csv
 				sudo sed -e 's///g' current-users.csv >> new-current-users.csv
 				sudo rm current-users.csv
 				sudo mv new-current-users.csv current-users.csv
